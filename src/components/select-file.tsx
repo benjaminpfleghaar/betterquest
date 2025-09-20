@@ -1,43 +1,53 @@
 "use client";
 
 import Image from "next/image";
+import { imageSchema } from "@/lib/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export default function SelectFile() {
-  const [file, setFile] = useState<File | null>(null);
-  const [image, setImage] = useState<string>("");
+  const [file, setFile] = useState<File | undefined>();
+  const [imageURL, setImageURL] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!file) return;
 
-    const fileURL = URL.createObjectURL(file);
-    setImage(fileURL);
+    const url = URL.createObjectURL(file);
+    setImageURL(url);
 
-    return () => URL.revokeObjectURL(fileURL);
+    return () => URL.revokeObjectURL(url);
   }, [file]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    setFile(e.target.files[0]);
-  };
+    const selectedFile = e.target.files?.[0];
 
-  const handleReset = () => {
-    setFile(null);
-    setImage("");
+    if (selectedFile) {
+      const result = imageSchema.safeParse(selectedFile);
+
+      if (result.success) {
+        setFile(result.data);
+        setError("");
+      } else {
+        setError(result.error.issues[0].message);
+      }
+    }
   };
 
   return (
     <div>
       <form>
         <input type="file" accept="image/*" onChange={handleChange} />
-        {image && (
+        {error && <div className="font-bold text-red-500">{error}</div>}
+        {imageURL && (
           <div className="relative w-48 h-48">
-            <Image src={image} alt="Upload" fill={true} objectFit="cover" />
+            <Image
+              src={imageURL}
+              alt="Preview image"
+              fill={true}
+              objectFit="cover"
+            />
           </div>
         )}
-        <button type="reset" onClick={handleReset}>
-          Reset
-        </button>
       </form>
     </div>
   );
