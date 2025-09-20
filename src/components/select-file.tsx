@@ -34,21 +34,28 @@ export default function SelectFile() {
   };
 
   return (
-    <div>
-      <form>
-        <input type="file" accept="image/*" onChange={handleChange} />
-        {error && <div className="font-bold text-red-500">{error}</div>}
-        {imageURL && (
-          <div className="relative w-48 h-48">
-            <Image
-              src={imageURL}
-              alt="Preview image"
-              fill={true}
-              objectFit="cover"
-            />
-          </div>
-        )}
-      </form>
-    </div>
+    <form>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleChange}
+        aria-invalid={!!error}
+      />
+      {error && (
+        <p className="font-bold text-red-500" role="alert">
+          {error}
+        </p>
+      )}
+      {imageURL && (
+        <div className="relative w-48 h-48">
+          <Image
+            src={imageURL}
+            alt="Preview image"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </div>
+      )}
+    </form>
   );
 }
