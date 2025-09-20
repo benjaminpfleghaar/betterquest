@@ -27,14 +27,14 @@ export default function SelectFile() {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
-    const result = fileSchema.safeParse(selectedFile);
+    const parseResult = fileSchema.safeParse(selectedFile);
 
-    if (result.success) {
-      setFile(result.data);
+    if (parseResult.success) {
+      setFile(parseResult.data);
       setError("");
     } else {
       setFile(null);
-      setError(result.error.issues[0].message);
+      setError(parseResult.error.issues[0].message);
       e.target.value = "";
     }
   };
@@ -57,7 +57,7 @@ export default function SelectFile() {
         className="hidden"
       />
       {error && (
-        <p className="font-bold text-red-500" id="file-error" role="alert">
+        <p id="file-error" role="alert">
           {error}
         </p>
       )}
