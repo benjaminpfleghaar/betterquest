@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { fileSchema } from "@/lib/validation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [file, setFile] = useState<File | null>(null);
   const [fileURL, setFileURL] = useState("");
   const [error, setError] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!file) {
@@ -22,33 +24,40 @@ export default function SelectFile() {
   }, [file]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputField = e.target;
-    const selectedFile = inputField.files?.[0];
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
 
-    if (selectedFile) {
-      const result = fileSchema.safeParse(selectedFile);
+    const result = fileSchema.safeParse(selectedFile);
 
-      if (result.success) {
-        setFile(result.data);
-        setError("");
-      } else {
-        setFile(null);
-        setError(result.error.issues[0].message);
-        inputField.value = "";
-      }
+    if (result.success) {
+      setFile(result.data);
+      setError("");
+    } else {
+      setFile(null);
+      setError(result.error.issues[0].message);
+      e.target.value = "";
     }
   };
 
   return (
     <form>
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        aria-describedby={error ? "file-error" : undefined}
+      >
+        Select File
+      </button>
       <input
         type="file"
+        ref={inputRef}
         accept="image/*"
         onChange={handleChange}
         aria-invalid={!!error}
+        className="hidden"
       />
       {error && (
-        <p className="font-bold text-red-500" role="alert">
+        <p className="font-bold text-red-500" id="file-error" role="alert">
           {error}
         </p>
       )}
