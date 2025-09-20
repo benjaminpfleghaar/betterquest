@@ -1,13 +1,14 @@
 import { z } from "zod";
 
-const fileSizeLimit = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const ACCEPTED_FILE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 
-export const imageSchema = z
-  .instanceof(File)
-  .refine(
-    (file) => ["image/png", "image/jpeg", "image/jpg"].includes(file.type),
-    { message: "Invalid image file type" },
-  )
-  .refine((file) => file.size <= fileSizeLimit, {
-    message: "File size should not exceed 5 MB",
-  });
+export const fileSchema = z
+  .file()
+  .max(MAX_FILE_SIZE, { message: "File size should not exceed 5 MB" })
+  .mime(ACCEPTED_FILE_TYPES, { message: "Invalid image file type" });

@@ -1,34 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { imageSchema } from "@/lib/validation";
+import { fileSchema } from "@/lib/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export default function SelectFile() {
-  const [file, setFile] = useState<File | undefined>();
-  const [imageURL, setImageURL] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [fileURL, setFileURL] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!file) return;
+    if (!file) {
+      setFileURL("");
+      return;
+    }
 
     const url = URL.createObjectURL(file);
-    setImageURL(url);
+    setFileURL(url);
 
     return () => URL.revokeObjectURL(url);
   }, [file]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+    const inputField = e.target;
+    const selectedFile = inputField.files?.[0];
 
     if (selectedFile) {
-      const result = imageSchema.safeParse(selectedFile);
+      const result = fileSchema.safeParse(selectedFile);
 
       if (result.success) {
         setFile(result.data);
         setError("");
       } else {
+        setFile(null);
         setError(result.error.issues[0].message);
+        inputField.value = "";
       }
     }
   };
@@ -46,16 +52,19 @@ export default function SelectFile() {
           {error}
         </p>
       )}
-      {imageURL && (
+      {fileURL && (
         <div className="relative w-48 h-48">
           <Image
-            src={imageURL}
+            src={fileURL}
             alt="Preview image"
             fill
             style={{ objectFit: "cover" }}
           />
         </div>
       )}
+      <button type="submit" disabled={!file || !!error}>
+        Submit
+      </button>
     </form>
   );
 }
