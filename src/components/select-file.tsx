@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { createLink } from "@/lib/actions";
+import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
+  const [state, formAction, isPending] = useActionState(handleSubmit, null);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
 
@@ -22,8 +23,8 @@ export default function SelectFile() {
     };
   }, [fileURL]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
     const parseResult = fileSchema.safeParse(selectedFile);
@@ -34,16 +35,16 @@ export default function SelectFile() {
     } else {
       setFile(null);
       setError(parseResult.error.issues[0].message);
-      e.target.value = "";
+      event.target.value = "";
     }
   };
 
   return (
-    <form action={createLink}>
+    <form action={formAction}>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        aria-describedby={error ? "file-error" : undefined}
+        aria-describedby={error || state?.error ? "file-error" : undefined}
       >
         Select File
       </button>
@@ -52,16 +53,10 @@ export default function SelectFile() {
         ref={inputRef}
         accept="image/*"
         onChange={handleChange}
-        aria-invalid={!!error}
         className="hidden"
         name="file"
         required
       />
-      {error && (
-        <p id="file-error" role="alert">
-          {error}
-        </p>
-      )}
       {fileURL && (
         <div className="relative w-48 h-48">
           <Image
@@ -72,9 +67,14 @@ export default function SelectFile() {
           />
         </div>
       )}
-      <button type="submit" disabled={!file || !!error}>
-        Submit
+      <button type="submit" disabled={!file || !!error || isPending}>
+        {isPending ? "Loading..." : "Submit"}
       </button>
+      {(error || state?.error) && (
+        <p id="file-error" role="alert">
+          {error || state?.error}
+        </p>
+      )}
     </form>
   );
 }
