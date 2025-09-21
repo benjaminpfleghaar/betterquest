@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { createLink } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
@@ -40,7 +41,7 @@ export default function SelectFile() {
   };
 
   return (
-    <form>
+    <form action={createLink}>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
@@ -55,6 +56,8 @@ export default function SelectFile() {
         onChange={handleChange}
         aria-invalid={!!error}
         className="hidden"
+        name="file"
+        required
       />
       {error && (
         <p id="file-error" role="alert">
