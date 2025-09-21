@@ -3,26 +3,24 @@
 import Image from "next/image";
 import { createLink } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [file, setFile] = useState<File | null>(null);
-  const [fileURL, setFileURL] = useState("");
   const [error, setError] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const fileURL = useMemo(
+    () => (file ? URL.createObjectURL(file) : null),
+    [file],
+  );
+
   useEffect(() => {
-    if (!file) {
-      setFileURL("");
-      return;
-    }
-
-    const url = URL.createObjectURL(file);
-    setFileURL(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [file]);
+    return () => {
+      if (fileURL) URL.revokeObjectURL(fileURL);
+    };
+  }, [fileURL]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
