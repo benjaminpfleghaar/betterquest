@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase";
 
 export const handleSubmit = async (_: unknown, formData: FormData) => {
   try {
-    const supabase = await createClient();
     const selectedFile = formData.get("file") as File;
     const parseResult = fileSchema.safeParse(selectedFile);
 
@@ -15,13 +14,17 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       };
     }
 
-    const today = new Date().toISOString().split("T")[0];
-    const fileExt = selectedFile.name.split(".").pop();
-    const filePath = `${today}.${fileExt}`;
+    const supabase = await createClient();
+
+    const uniqueId = Date.now().toString(36);
+    const todaysDate = new Date().toISOString().split("T")[0];
+
+    const fileExt = selectedFile.type.split("/")[1];
+    const fileName = `${todaysDate}_${uniqueId}.${fileExt}`;
 
     const { data: storageData, error: storageError } = await supabase.storage
       .from("images")
-      .upload(filePath, selectedFile);
+      .upload(fileName, selectedFile);
 
     if (storageError) {
       return {
@@ -29,17 +32,21 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       };
     }
 
-    const { error: linkError } = await supabase
+    const { error: tableError } = await supabase
       .from("links")
-      .insert({ url: crypto.randomUUID(), image: storageData.fullPath });
+      .insert({ url: uniqueId, image: storageData.path });
 
-    if (linkError) {
+    if (tableError) {
       return {
-        error: linkError.message,
+        error: tableError.message,
       };
     }
-  } catch (err) {
-    console.error(err);
-    return { error: "An unexpected error occurred. Please try again later" };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    } else {
+      console.error(error);
+      return { error: "An unexpected error occurred. Please try again later." };
+    }
   }
 };

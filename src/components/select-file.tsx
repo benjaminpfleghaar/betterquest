@@ -51,7 +51,7 @@ export default function SelectFile() {
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        aria-describedby={error || state?.error ? "file-error" : undefined}
+        aria-describedby={error || state?.error ? "form-error" : undefined}
       >
         Select File
       </button>
@@ -78,7 +78,7 @@ export default function SelectFile() {
         {isPending ? "Loading..." : "Submit"}
       </button>
       {(error || state?.error) && (
-        <p id="file-error" role="alert">
+        <p id="form-error" role="alert">
           {error || state?.error}
         </p>
       )}
