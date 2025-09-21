@@ -6,6 +6,13 @@ import { createClient } from "@/lib/supabase";
 export const handleSubmit = async (_: unknown, formData: FormData) => {
   try {
     const selectedFile = formData.get("file") as File;
+
+    if (!selectedFile) {
+      return {
+        error: "No file selected",
+      };
+    }
+
     const parseResult = fileSchema.safeParse(selectedFile);
 
     if (!parseResult.success) {

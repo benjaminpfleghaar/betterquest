@@ -10,5 +10,6 @@ const ACCEPTED_FILE_TYPES = [
 
 export const fileSchema = z
   .file()
+  .min(1, { message: "File can not be empty" })
   .max(MAX_FILE_SIZE, { message: "File size should not exceed 5 MB" })
   .mime(ACCEPTED_FILE_TYPES, { message: "Invalid image file type" });
