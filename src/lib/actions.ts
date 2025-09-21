@@ -1,9 +1,11 @@
 "use server";
 
 import { fileSchema } from "@/lib/validation";
+import { createClient } from "@/lib/supabase";
 
 export const handleSubmit = async (_: unknown, formData: FormData) => {
   try {
+    const supabase = await createClient();
     const selectedFile = formData.get("file") as File;
     const parseResult = fileSchema.safeParse(selectedFile);
 
@@ -13,18 +15,29 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       };
     }
 
+    const today = new Date().toISOString().split("T")[0];
     const fileExt = selectedFile.name.split(".").pop();
-    const filePath = `image.${fileExt}`;
+    const filePath = `${today}.${fileExt}`;
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const { data: storageData, error: storageError } = await supabase.storage
+      .from("images")
+      .upload(filePath, selectedFile);
 
-    const payload = {
-      id: crypto.randomUUID(),
-      file: selectedFile,
-      filePath: filePath,
-    };
+    if (storageError) {
+      return {
+        error: storageError.message,
+      };
+    }
 
-    console.log(payload);
+    const { error: linkError } = await supabase
+      .from("links")
+      .insert({ url: crypto.randomUUID(), image: storageData.fullPath });
+
+    if (linkError) {
+      return {
+        error: linkError.message,
+      };
+    }
   } catch (err) {
     console.error(err);
     return { error: "An unexpected error occurred. Please try again later" };
