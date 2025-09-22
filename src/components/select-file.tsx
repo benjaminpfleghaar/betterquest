@@ -3,14 +3,7 @@
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import {
-  ChangeEvent,
-  useActionState,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -74,9 +67,11 @@ export default function SelectFile() {
           />
         </div>
       )}
-      <button type="submit" disabled={!file || !!error || isPending}>
-        {isPending ? "Loading..." : "Submit"}
-      </button>
+      {file && (
+        <button type="submit" disabled={isPending}>
+          {isPending ? "Loading..." : "Submit"}
+        </button>
+      )}
       {(error || state?.error) && (
         <p id="form-error" role="alert">
           {error || state?.error}

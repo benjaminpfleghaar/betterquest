@@ -5,15 +5,15 @@ import { createClient } from "@/lib/supabase";
 
 export const handleSubmit = async (_: unknown, formData: FormData) => {
   try {
-    const selectedFile = formData.get("file") as File;
+    const file = formData.get("file") as File;
 
-    if (!selectedFile) {
+    if (!file) {
       return {
         error: "No file selected",
       };
     }
 
-    const parseResult = fileSchema.safeParse(selectedFile);
+    const parseResult = fileSchema.safeParse(file);
 
     if (!parseResult.success) {
       return {
@@ -26,12 +26,12 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
     const uniqueId = Date.now().toString(36);
     const todaysDate = new Date().toISOString().split("T")[0];
 
-    const fileExt = selectedFile.type.split("/")[1];
-    const fileName = `${todaysDate}_${uniqueId}.${fileExt}`;
+    const fileExt = file.type.split("/")[1];
+    const fileName = `${todaysDate}-${uniqueId}.${fileExt}`;
 
     const { data: storageData, error: storageError } = await supabase.storage
       .from("images")
-      .upload(fileName, selectedFile);
+      .upload(fileName, file);
 
     if (storageError) {
       return {
