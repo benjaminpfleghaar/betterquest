@@ -1,9 +1,12 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { fileSchema } from "@/lib/validation";
 import { createClient } from "@/lib/supabase";
 
 export const handleSubmit = async (_: unknown, formData: FormData) => {
+  let redirectLocation;
+
   try {
     const file = formData.get("file") as File;
 
@@ -23,13 +26,13 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
 
     const supabase = await createClient();
 
-    const uniqueId = Date.now().toString(36);
+    const slug = Date.now().toString(36);
     const todaysDate = new Date().toISOString().split("T")[0];
 
     const fileExt = file.type.split("/")[1];
-    const fileName = `${todaysDate}-${uniqueId}.${fileExt}`;
+    const fileName = `${todaysDate}-${slug}.${fileExt}`;
 
-    const { data: storageData, error: storageError } = await supabase.storage
+    const { data: storage, error: storageError } = await supabase.storage
       .from("images")
       .upload(fileName, file);
 
@@ -39,15 +42,17 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       };
     }
 
-    const { error: tableError } = await supabase
-      .from("links")
-      .insert({ url: uniqueId, image: storageData.path });
+    const { error: locationsError } = await supabase
+      .from("locations")
+      .insert({ slug: slug, image: storage.path });
 
-    if (tableError) {
+    if (locationsError) {
       return {
-        error: tableError.message,
+        error: locationsError.message,
       };
     }
+
+    redirectLocation = slug;
   } catch (error: unknown) {
     if (error instanceof Error) {
       return { error: error.message };
@@ -55,5 +60,9 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       console.error(error);
       return { error: "An unexpected error occurred. Please try again later." };
     }
+  }
+
+  if (redirectLocation) {
+    redirect(`/${redirectLocation}`);
   }
 };

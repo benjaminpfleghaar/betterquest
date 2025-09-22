@@ -39,24 +39,24 @@ export type Database = {
   };
   public: {
     Tables: {
-      links: {
+      locations: {
         Row: {
           created_at: string;
           id: number;
           image: string;
-          url: string;
+          slug: string;
         };
         Insert: {
           created_at?: string;
           id?: number;
           image?: string;
-          url?: string;
+          slug?: string;
         };
         Update: {
           created_at?: string;
           id?: number;
           image?: string;
-          url?: string;
+          slug?: string;
         };
         Relationships: [];
       };
