@@ -42,13 +42,13 @@ export default function SelectFile() {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
-    const parseFile = fileSchema.safeParse(selectedFile);
+    const validatedFile = fileSchema.safeParse(selectedFile);
 
-    if (!parseFile.success) {
+    if (!validatedFile.success) {
       setFile(null);
-      setError(parseFile.error.issues[0].message);
+      setError(validatedFile.error.issues[0].message);
     } else {
-      setFile(parseFile.data);
+      setFile(validatedFile.data);
       setError("");
     }
   };

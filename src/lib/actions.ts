@@ -12,12 +12,11 @@ export const handleSubmit = async (
   const slug = Date.now().toString(36); // unique identifier for url and file name
 
   try {
-    const file = formData.get("file") as File;
-    const parseFile = fileSchema.safeParse(file);
+    const validatedFile = fileSchema.safeParse(formData.get("file"));
 
-    if (!parseFile.success) {
+    if (!validatedFile.success) {
       return {
-        error: parseFile.error.issues[0].message,
+        error: validatedFile.error.issues[0].message,
       };
     }
 
@@ -25,7 +24,10 @@ export const handleSubmit = async (
 
     const { data: storage, error: storageError } = await supabase.storage
       .from("images")
-      .upload(`${slug}.${file.type.split("/")[1]}`, file);
+      .upload(
+        `${slug}.${validatedFile.data.type.split("/")[1]}`,
+        validatedFile.data,
+      );
 
     if (storageError) {
       return {
