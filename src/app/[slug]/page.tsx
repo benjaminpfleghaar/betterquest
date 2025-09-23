@@ -28,8 +28,9 @@ export default async function Location({
     .from("images")
     .getPublicUrl(location.image);
 
-  // TODO provide proper error handling
-  if (!file) notFound();
+  const response = await fetch(file.publicUrl);
+
+  if (!response.ok) notFound();
 
   return (
     <div className="relative w-48 h-48">

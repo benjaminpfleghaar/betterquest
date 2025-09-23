@@ -42,13 +42,13 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
       };
     }
 
-    const { error: locationsError } = await supabase
+    const { error: locationError } = await supabase
       .from("locations")
       .insert({ slug: slug, image: storage.path });
 
-    if (locationsError) {
+    if (locationError) {
       return {
-        error: locationsError.message,
+        error: locationError.message,
       };
     }
 
@@ -57,7 +57,6 @@ export const handleSubmit = async (_: unknown, formData: FormData) => {
     if (error instanceof Error) {
       return { error: error.message };
     } else {
-      console.error(error);
       return { error: "An unexpected error occurred. Please try again later." };
     }
   }
