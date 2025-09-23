@@ -1,8 +1,8 @@
 "use server";
 
-import {redirect} from "next/navigation";
-import {fileSchema} from "@/lib/validation";
-import {createClient} from "@/lib/supabase";
+import { redirect } from "next/navigation";
+import { fileSchema } from "@/lib/validation";
+import { createClient } from "@/lib/supabase";
 
 const mimeToExt: Record<string, string> = {
   "image/jpeg": "jpg",
