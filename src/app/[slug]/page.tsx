@@ -22,7 +22,7 @@ export default async function Location({
     .eq("slug", slug)
     .single();
 
-  if (error || !location) notFound();
+  if (error) notFound();
 
   const { data: file } = supabase.storage
     .from("images")
