@@ -3,14 +3,7 @@
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import {
-  ChangeEvent,
-  useActionState,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -32,6 +25,7 @@ export default function SelectFile() {
 
   useEffect(() => {
     if (state?.error) {
+      if (inputRef.current) inputRef.current.value = "";
       setFile(null);
       setError(state.error);
     }
@@ -50,6 +44,12 @@ export default function SelectFile() {
       setFile(parseResult.data);
       setError("");
     }
+  };
+
+  const handleReset = () => {
+    if (inputRef.current) inputRef.current.value = "";
+    setFile(null);
+    setError("");
   };
 
   return (
@@ -75,11 +75,7 @@ export default function SelectFile() {
       ) : null}
       {file ? (
         <div className="space-x-4">
-          <button
-            type="reset"
-            onClick={() => setFile(null)}
-            disabled={isPending}
-          >
+          <button type="reset" onClick={handleReset} disabled={isPending}>
             Reset
           </button>
           <button type="submit" disabled={isPending}>
