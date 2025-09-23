@@ -63,7 +63,7 @@ export default function SelectFile() {
         name="file"
         required
       />
-      {fileURL && (
+      {fileURL ? (
         <div className="relative w-48 h-48">
           <Image
             src={fileURL}
@@ -72,7 +72,7 @@ export default function SelectFile() {
             style={{ objectFit: "cover" }}
           />
         </div>
-      )}
+      ) : null}
       {file ? (
         <div className="space-x-4">
           <button
@@ -95,11 +95,11 @@ export default function SelectFile() {
           Select File
         </button>
       )}
-      {error && (
+      {error ? (
         <p id="form-error" role="alert">
           {error}
         </p>
-      )}
+      ) : null}
     </form>
   );
 }

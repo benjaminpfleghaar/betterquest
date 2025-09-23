@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 import { fileSchema } from "@/lib/validation";
 import { createClient } from "@/lib/supabase";
 
-export const handleSubmit = async (_: unknown, formData: FormData) => {
+export const handleSubmit = async (
+  _: unknown,
+  formData: FormData,
+): Promise<{ error: string } | void> => {
   let redirectLocation;
 
   try {
