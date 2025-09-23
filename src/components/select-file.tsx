@@ -3,7 +3,14 @@
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -22,6 +29,13 @@ export default function SelectFile() {
       if (fileURL) URL.revokeObjectURL(fileURL);
     };
   }, [fileURL]);
+
+  useEffect(() => {
+    if (state?.error) {
+      setFile(null);
+      setError(state.error);
+    }
+  }, [state]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -76,14 +90,14 @@ export default function SelectFile() {
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          aria-describedby={error || state?.error ? "form-error" : undefined}
+          aria-describedby={error ? "form-error" : undefined}
         >
           Select File
         </button>
       )}
-      {(error || state?.error) && (
+      {error && (
         <p id="form-error" role="alert">
-          {error || state?.error}
+          {error}
         </p>
       )}
     </form>
