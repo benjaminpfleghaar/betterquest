@@ -25,7 +25,7 @@ export const handleSubmit = async (
     const { data: storage, error: storageError } = await supabase.storage
       .from("images")
       .upload(
-        `${slug}.${validatedFile.data.type.split("/")[1]}`,
+        `${slug}.${validatedFile.data.type.split("/")[1]}`, // not sure if this is a reliable method for determining the file extension
         validatedFile.data,
       );
 
