@@ -1,8 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { fileSchema } from "@/lib/validation";
-import { createClient } from "@/lib/supabase";
+import {redirect} from "next/navigation";
+import {fileSchema} from "@/lib/validation";
+import {createClient} from "@/lib/supabase";
 
 const mimeToExt: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -24,41 +24,35 @@ export const handleSubmit = async (
     const validatedFile = fileSchema.safeParse(formData.get("file"));
 
     if (!validatedFile.success) {
-      return {
-        error: validatedFile.error.issues[0].message,
-      };
+      return { error: validatedFile.error.issues[0].message };
     }
+
+    const file = validatedFile.data;
+    const ext = mimeToExt[file.type] ?? "bin";
+    const fileName = `${slug}.${ext}`;
 
     const supabase = await createClient();
 
-    const ext = mimeToExt[validatedFile.data.type] ?? "bin";
-    const fileName = `${slug}.${ext}`;
-
     const { data: storage, error: storageError } = await supabase.storage
       .from("images")
-      .upload(fileName, validatedFile.data);
+      .upload(fileName, file);
 
     if (storageError) {
-      return {
-        error: storageError.message,
-      };
+      return { error: storageError.message };
     }
 
     const { error: locationError } = await supabase
       .from("locations")
-      .insert({ slug: slug, image: storage.path });
+      .insert({ slug, image: storage.path });
 
     if (locationError) {
-      return {
-        error: locationError.message,
-      };
+      return { error: locationError.message };
     }
-  } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    } else {
-      return { error: "An unexpected error occurred. Please try again later." };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { error: err.message };
     }
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 
   redirect(`/${slug}`);
