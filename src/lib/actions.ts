@@ -56,7 +56,7 @@ export const handleSubmit = async (
     }
 
     redirectLocation = slug;
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error) {
       return { error: error.message };
     } else {
