@@ -1,7 +1,9 @@
+import exifr from "exifr";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import MapLocation from "@/components/map-location";
 
 export const metadata: Metadata = {
   title: "Location",
@@ -32,14 +34,19 @@ export default async function Location({
 
   if (!response.ok) notFound();
 
+  const gpsData = await exifr.gps(file.publicUrl);
+
   return (
-    <div className="relative w-48 h-48">
-      <Image
-        src={file.publicUrl}
-        alt="Preview image"
-        fill
-        style={{ objectFit: "cover" }}
-      />
-    </div>
+    <>
+      <div className="relative w-48 h-48">
+        <Image
+          src={file.publicUrl}
+          alt="Preview image"
+          fill
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      {gpsData ? <MapLocation {...gpsData} /> : null}
+    </>
   );
 }

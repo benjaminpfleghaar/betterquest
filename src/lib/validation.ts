@@ -6,6 +6,10 @@ const ACCEPTED_FILE_TYPES = [
   "image/jpg",
   "image/png",
   "image/webp",
+  "image/gif",
+  "image/heic",
+  "image/heif",
+  "image/tiff",
 ];
 
 export const fileSchema = z

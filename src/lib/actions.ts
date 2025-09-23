@@ -4,11 +4,20 @@ import { redirect } from "next/navigation";
 import { fileSchema } from "@/lib/validation";
 import { createClient } from "@/lib/supabase";
 
+const mimeToExt: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/heic": "heic",
+  "image/heif": "heif",
+  "image/tiff": "tiff",
+};
+
 export const handleSubmit = async (
   _: unknown,
   formData: FormData,
-): Promise<{ error: string } | void> => {
-  let success = false;
+): Promise<{ error?: string }> => {
   const slug = Date.now().toString(36); // unique identifier for url and file name
 
   try {
@@ -22,12 +31,12 @@ export const handleSubmit = async (
 
     const supabase = await createClient();
 
+    const ext = mimeToExt[validatedFile.data.type] ?? "bin";
+    const fileName = `${slug}.${ext}`;
+
     const { data: storage, error: storageError } = await supabase.storage
       .from("images")
-      .upload(
-        `${slug}.${validatedFile.data.type.split("/")[1]}`, // not sure if this is a reliable method for determining the file extension
-        validatedFile.data,
-      );
+      .upload(fileName, validatedFile.data);
 
     if (storageError) {
       return {
@@ -44,8 +53,6 @@ export const handleSubmit = async (
         error: locationError.message,
       };
     }
-
-    success = true;
   } catch (error) {
     if (error instanceof Error) {
       return { error: error.message };
@@ -54,7 +61,5 @@ export const handleSubmit = async (
     }
   }
 
-  if (success) {
-    redirect(`/${slug}`);
-  }
+  redirect(`/${slug}`);
 };

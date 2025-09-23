@@ -1,5 +1,6 @@
 "use client";
 
+import exifr from "exifr";
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
@@ -32,13 +33,13 @@ export default function SelectFile() {
 
   useEffect(() => {
     if (state?.error) {
-      if (inputRef.current) inputRef.current.value = "";
+      if (inputRef.current) inputRef.current.value = ""; // not sure if the merge of client and server errors is fine
       setFile(null);
       setError(state.error);
     }
   }, [state]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
@@ -47,9 +48,26 @@ export default function SelectFile() {
     if (!validatedFile.success) {
       setFile(null);
       setError(validatedFile.error.issues[0].message);
-    } else {
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      const gpsData = await exifr.gps(validatedFile.data);
+
+      if (!gpsData) {
+        setFile(null);
+        setError("No GPS data available");
+        event.target.value = "";
+        return;
+      }
+
       setFile(validatedFile.data);
       setError("");
+    } catch {
+      setFile(null);
+      setError("Failed to read EXIF metadata");
+      event.target.value = "";
     }
   };
 
