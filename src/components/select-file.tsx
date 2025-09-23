@@ -3,14 +3,7 @@
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import {
-  ChangeEvent,
-  useActionState,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -36,25 +29,17 @@ export default function SelectFile() {
 
     const parseResult = fileSchema.safeParse(selectedFile);
 
-    if (parseResult.success) {
-      setFile(parseResult.data);
-      setError("");
-    } else {
+    if (!parseResult.success) {
       setFile(null);
       setError(parseResult.error.issues[0].message);
-      event.target.value = "";
+    } else {
+      setFile(parseResult.data);
+      setError("");
     }
   };
 
   return (
     <form action={formAction}>
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        aria-describedby={error || state?.error ? "form-error" : undefined}
-      >
-        Select File
-      </button>
       <input
         type="file"
         ref={inputRef}
@@ -74,9 +59,26 @@ export default function SelectFile() {
           />
         </div>
       )}
-      {file && (
-        <button type="submit" disabled={isPending}>
-          {isPending ? "Loading..." : "Submit"}
+      {file ? (
+        <div className="space-x-4">
+          <button
+            type="reset"
+            onClick={() => setFile(null)}
+            disabled={isPending}
+          >
+            Reset
+          </button>
+          <button type="submit" disabled={isPending}>
+            {isPending ? "Loading..." : "Submit"}
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          aria-describedby={error || state?.error ? "form-error" : undefined}
+        >
+          Select File
         </button>
       )}
       {(error || state?.error) && (
