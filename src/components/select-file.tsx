@@ -29,12 +29,7 @@ export default function SelectFile() {
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) {
-      if (inputRef.current) inputRef.current.value = ""; // not sure if the merge of client and server errors is fine
-      setFile(null);
-      setLocation(null);
-      setError(state.error);
-    }
+    if (state?.error) resetForm(state.error);
   }, [state]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +39,7 @@ export default function SelectFile() {
     const validatedFile = fileSchema.safeParse(selectedFile);
 
     if (!validatedFile.success) {
-      setFile(null);
-      setLocation(null);
-      setError(validatedFile.error.issues[0].message);
+      resetForm(validatedFile.error.issues[0].message);
       event.target.value = "";
       return;
     }
@@ -55,9 +48,7 @@ export default function SelectFile() {
       const gpsData = await exifr.gps(validatedFile.data);
 
       if (!gpsData) {
-        setFile(null);
-        setLocation(null);
-        setError("No GPS data available");
+        resetForm("No GPS data available");
         event.target.value = "";
         return;
       }
@@ -68,18 +59,16 @@ export default function SelectFile() {
       });
       setError("");
     } catch {
-      setFile(null);
-      setLocation(null);
-      setError("Failed to read EXIF metadata");
+      resetForm("Failed to read EXIF metadata");
       event.target.value = "";
     }
   };
 
-  const handleReset = () => {
+  const resetForm = (err?: string) => {
     if (inputRef.current) inputRef.current.value = "";
     setFile(null);
     setLocation(null);
-    setError("");
+    setError(err ? err : "");
   };
 
   return (
@@ -111,7 +100,7 @@ export default function SelectFile() {
       ) : null}
       {file ? (
         <div className="space-x-4">
-          <button type="reset" onClick={handleReset} disabled={isPending}>
+          <button type="reset" onClick={() => resetForm()} disabled={isPending}>
             Reset
           </button>
           <button type="submit" disabled={isPending}>
