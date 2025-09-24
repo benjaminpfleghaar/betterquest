@@ -44,18 +44,24 @@ export type Database = {
           created_at: string;
           id: number;
           image: string;
+          latitude: number;
+          longitude: number;
           slug: string;
         };
         Insert: {
           created_at?: string;
           id?: number;
           image?: string;
+          latitude: number;
+          longitude: number;
           slug?: string;
         };
         Update: {
           created_at?: string;
           id?: number;
           image?: string;
+          latitude?: number;
+          longitude?: number;
           slug?: string;
         };
         Relationships: [];
