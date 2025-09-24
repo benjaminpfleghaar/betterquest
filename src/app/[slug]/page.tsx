@@ -14,8 +14,9 @@ export default async function Location({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const supabase = await createClient();
   const { slug } = await params;
+
+  const supabase = await createClient();
 
   const { data: location, error } = await supabase
     .from("locations")
