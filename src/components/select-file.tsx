@@ -8,7 +8,10 @@ import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } fro
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
-  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
 
@@ -29,7 +32,7 @@ export default function SelectFile() {
     if (state?.error) {
       if (inputRef.current) inputRef.current.value = ""; // not sure if the merge of client and server errors is fine
       setFile(null);
-      setLocation({ latitude: 0, longitude: 0 });
+      setLocation(null);
       setError(state.error);
     }
   }, [state]);
@@ -42,7 +45,7 @@ export default function SelectFile() {
 
     if (!validatedFile.success) {
       setFile(null);
-      setLocation({ latitude: 0, longitude: 0 });
+      setLocation(null);
       setError(validatedFile.error.issues[0].message);
       event.target.value = "";
       return;
@@ -53,7 +56,7 @@ export default function SelectFile() {
 
       if (!gpsData) {
         setFile(null);
-        setLocation({ latitude: 0, longitude: 0 });
+        setLocation(null);
         setError("No GPS data available");
         event.target.value = "";
         return;
@@ -66,7 +69,7 @@ export default function SelectFile() {
       setError("");
     } catch {
       setFile(null);
-      setLocation({ latitude: 0, longitude: 0 });
+      setLocation(null);
       setError("Failed to read EXIF metadata");
       event.target.value = "";
     }
@@ -75,7 +78,7 @@ export default function SelectFile() {
   const handleReset = () => {
     if (inputRef.current) inputRef.current.value = "";
     setFile(null);
-    setLocation({ latitude: 0, longitude: 0 });
+    setLocation(null);
     setError("");
   };
 
@@ -90,15 +93,19 @@ export default function SelectFile() {
         name="file"
         required
       />
-      <input type="hidden" name="latitude" value={location.latitude} />
-      <input type="hidden" name="longitude" value={location.longitude} />
+      {location ? (
+        <>
+          <input type="hidden" name="latitude" value={location.latitude} />
+          <input type="hidden" name="longitude" value={location.longitude} />
+        </>
+      ) : null}
       {fileURL ? (
         <div className="relative w-48 h-48">
           <Image
             src={fileURL}
             alt="Preview image"
+            className="object-cover"
             fill
-            style={{ objectFit: "cover" }}
           />
         </div>
       ) : null}

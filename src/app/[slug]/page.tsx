@@ -30,7 +30,6 @@ export default async function Location({
     .getPublicUrl(location.image);
 
   const response = await fetch(file.publicUrl);
-
   if (!response.ok) notFound();
 
   return (
@@ -39,8 +38,8 @@ export default async function Location({
         <Image
           src={file.publicUrl}
           alt="Preview image"
+          className="object-cover"
           fill
-          style={{ objectFit: "cover" }}
         />
       </div>
       <MapLocation

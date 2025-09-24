@@ -51,10 +51,10 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: number;
-          image: string;
+          image?: string;
           latitude: number;
           longitude: number;
-          slug: string;
+          slug?: string;
         };
         Update: {
           created_at?: string;

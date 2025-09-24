@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { fileSchema } from "@/lib/validation";
 import { createClient } from "@/lib/supabase";
+import { formSchema } from "@/lib/validation";
 
 const mimeToExt: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -17,20 +17,22 @@ const mimeToExt: Record<string, string> = {
 export const handleSubmit = async (
   _: unknown,
   formData: FormData,
-): Promise<{ error?: string }> => {
+): Promise<{ error: string | never }> => {
   const slug = Date.now().toString(36); // unique identifier for url and file name
 
   try {
-    const latitude = (formData.get("latitude") ?? 0) as number;
-    const longitude = (formData.get("longitude") ?? 0) as number;
+    const validatedForm = formSchema.safeParse({
+      file: formData.get("file"),
+      latitude: formData.get("latitude"),
+      longitude: formData.get("longitude"),
+    });
 
-    const validatedFile = fileSchema.safeParse(formData.get("file"));
-
-    if (!validatedFile.success) {
-      return { error: validatedFile.error.issues[0].message };
+    if (!validatedForm.success) {
+      return { error: validatedForm.error.issues[0].message };
     }
 
-    const file = validatedFile.data;
+    const { file, latitude, longitude } = validatedForm.data;
+
     const ext = mimeToExt[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
 
@@ -44,9 +46,12 @@ export const handleSubmit = async (
       return { error: storageError.message };
     }
 
-    const { error: locationError } = await supabase
-      .from("locations")
-      .insert({ slug, image: storage.path, latitude, longitude });
+    const { error: locationError } = await supabase.from("locations").insert({
+      slug,
+      image: storage.path,
+      latitude,
+      longitude,
+    });
 
     if (locationError) {
       return { error: locationError.message };
