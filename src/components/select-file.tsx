@@ -4,7 +4,14 @@ import exifr from "exifr";
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -72,22 +79,7 @@ export default function SelectFile() {
   };
 
   return (
-    <form action={formAction}>
-      <input
-        type="file"
-        ref={inputRef}
-        accept="image/*"
-        onChange={handleChange}
-        className="hidden"
-        name="file"
-        required
-      />
-      {location ? (
-        <>
-          <input type="hidden" name="latitude" value={location.latitude} />
-          <input type="hidden" name="longitude" value={location.longitude} />
-        </>
-      ) : null}
+    <>
       {fileURL ? (
         <div className="relative w-48 h-48">
           <Image
@@ -98,29 +90,50 @@ export default function SelectFile() {
           />
         </div>
       ) : null}
-      {file ? (
-        <div className="space-x-4">
-          <button type="reset" onClick={() => resetForm()} disabled={isPending}>
-            Reset
+      <form action={formAction}>
+        <input
+          type="file"
+          ref={inputRef}
+          accept="image/*"
+          onChange={handleChange}
+          className="hidden"
+          name="file"
+          required
+        />
+        {location ? (
+          <>
+            <input type="hidden" name="latitude" value={location.latitude} />
+            <input type="hidden" name="longitude" value={location.longitude} />
+          </>
+        ) : null}
+        {file ? (
+          <div className="space-x-4">
+            <button
+              type="reset"
+              onClick={() => resetForm()}
+              disabled={isPending}
+            >
+              Reset
+            </button>
+            <button type="submit" disabled={isPending}>
+              {isPending ? "Loading..." : "Submit"}
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            aria-describedby={error ? "form-error" : undefined}
+          >
+            Select File
           </button>
-          <button type="submit" disabled={isPending}>
-            {isPending ? "Loading..." : "Submit"}
-          </button>
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          aria-describedby={error ? "form-error" : undefined}
-        >
-          Select File
-        </button>
-      )}
+        )}
+      </form>
       {error ? (
         <p id="form-error" role="alert">
           {error}
         </p>
       ) : null}
-    </form>
+    </>
   );
 }
