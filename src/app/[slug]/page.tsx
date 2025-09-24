@@ -19,7 +19,7 @@ export default async function Location({
 
   const { data: location, error } = await supabase
     .from("locations")
-    .select("slug, image, latitude, longitude")
+    .select("image, latitude, longitude")
     .eq("slug", slug)
     .single();
 
