@@ -21,6 +21,9 @@ export const handleSubmit = async (
   const slug = Date.now().toString(36); // unique identifier for url and file name
 
   try {
+    const latitude = (formData.get("latitude") ?? 0) as number;
+    const longitude = (formData.get("longitude") ?? 0) as number;
+
     const validatedFile = fileSchema.safeParse(formData.get("file"));
 
     if (!validatedFile.success) {
@@ -43,7 +46,7 @@ export const handleSubmit = async (
 
     const { error: locationError } = await supabase
       .from("locations")
-      .insert({ slug, image: storage.path });
+      .insert({ slug, image: storage.path, latitude, longitude });
 
     if (locationError) {
       return { error: locationError.message };

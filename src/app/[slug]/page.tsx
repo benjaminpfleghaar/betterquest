@@ -1,4 +1,3 @@
-import exifr from "exifr";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -20,11 +19,11 @@ export default async function Location({
 
   const { data: location, error } = await supabase
     .from("locations")
-    .select("slug, image")
+    .select("slug, image, latitude, longitude")
     .eq("slug", slug)
     .single();
 
-  if (error) notFound();
+  if (error || !location) notFound();
 
   const { data: file } = supabase.storage
     .from("images")
@@ -33,8 +32,6 @@ export default async function Location({
   const response = await fetch(file.publicUrl);
 
   if (!response.ok) notFound();
-
-  const gpsData = await exifr.gps(file.publicUrl);
 
   return (
     <>
@@ -46,7 +43,10 @@ export default async function Location({
           style={{ objectFit: "cover" }}
         />
       </div>
-      {gpsData ? <MapLocation {...gpsData} /> : null}
+      <MapLocation
+        latitude={location.latitude}
+        longitude={location.longitude}
+      />
     </>
   );
 }
