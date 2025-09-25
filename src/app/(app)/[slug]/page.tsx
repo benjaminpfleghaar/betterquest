@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import CopyButton from "@/components/copy-button";
 import MapLocation from "@/components/map-location";
 
 export const metadata: Metadata = {
@@ -47,6 +48,7 @@ export default async function Location({
         latitude={location.latitude}
         longitude={location.longitude}
       />
+      <CopyButton slug={slug} />
     </>
   );
 }
