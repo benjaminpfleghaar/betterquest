@@ -31,23 +31,29 @@ export default function SelectFile() {
 
   useEffect(() => {
     return () => {
-      if (fileURL) URL.revokeObjectURL(fileURL);
+      if (fileURL) {
+        URL.revokeObjectURL(fileURL);
+      }
     };
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) resetForm(state.error);
+    if (state?.error) {
+      resetForm(state.error);
+    }
   }, [state]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (!selectedFile) return;
+
+    if (!selectedFile) {
+      return;
+    }
 
     const validatedFile = fileSchema.safeParse(selectedFile);
 
     if (!validatedFile.success) {
       resetForm(validatedFile.error.issues[0].message);
-      event.target.value = "";
       return;
     }
 
@@ -56,7 +62,6 @@ export default function SelectFile() {
 
       if (!gpsData) {
         resetForm("No GPS data available");
-        event.target.value = "";
         return;
       }
 
@@ -67,15 +72,17 @@ export default function SelectFile() {
       setError("");
     } catch {
       resetForm("Failed to read EXIF metadata");
-      event.target.value = "";
     }
   };
 
   const resetForm = (err?: string) => {
-    if (inputRef.current) inputRef.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
     setFile(null);
     setLocation(null);
-    setError(err ? err : "");
+    setError(err ?? "");
   };
 
   return (

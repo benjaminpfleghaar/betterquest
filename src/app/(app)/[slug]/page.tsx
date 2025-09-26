@@ -25,13 +25,17 @@ export default async function Location({
     .eq("slug", slug)
     .single();
 
-  if (locationError || !location) notFound();
+  if (locationError || !location) {
+    notFound();
+  }
 
   const { data: storage, error: storageError } = await supabase.storage
     .from("images")
     .createSignedUrl(location.image, 60);
 
-  if (storageError || !storage) notFound();
+  if (storageError || !storage) {
+    notFound();
+  }
 
   return (
     <>
