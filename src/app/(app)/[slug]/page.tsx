@@ -31,7 +31,7 @@ export default async function Location({
     .from("images")
     .getPublicUrl(location.image);
 
-  const response = await fetch(file.publicUrl);
+  const response = await fetch(file.publicUrl); // not happy with this because image is getting fetched twice
   if (!response.ok) notFound();
 
   return (

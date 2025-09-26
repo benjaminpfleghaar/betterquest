@@ -17,10 +17,10 @@ export default function CopyButton({ slug }: { slug: string }) {
     };
   }, [isCopied]);
 
-  async function copyLinkToClipboard() {
+  const copyLinkToClipboard = async () => {
     setIsCopied(true);
     await navigator.clipboard.writeText(`/${slug}`);
-  }
+  };
 
   return (
     <button type="button" onClick={copyLinkToClipboard}>
