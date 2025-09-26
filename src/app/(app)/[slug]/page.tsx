@@ -19,26 +19,25 @@ export default async function Location({
 
   const supabase = await createClient();
 
-  const { data: location, error } = await supabase
+  const { data: location, error: locationError } = await supabase
     .from("locations")
     .select("image, latitude, longitude")
     .eq("slug", slug)
     .single();
 
-  if (error || !location) notFound();
+  if (locationError || !location) notFound();
 
-  const { data: file } = supabase.storage
+  const { data: storage, error: storageError } = await supabase.storage
     .from("images")
-    .getPublicUrl(location.image);
+    .createSignedUrl(location.image, 60);
 
-  const response = await fetch(file.publicUrl); // not happy with this because image is getting fetched twice
-  if (!response.ok) notFound();
+  if (storageError || !storage) notFound();
 
   return (
     <>
       <div className="relative w-48 h-48">
         <Image
-          src={file.publicUrl}
+          src={storage.signedUrl}
           alt="Preview image"
           className="object-cover"
           fill

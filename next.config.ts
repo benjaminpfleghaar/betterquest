@@ -3,9 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      new URL(
-        "https://ovkgdfloifzxmvrarmmq.supabase.co/storage/v1/object/public/images/**",
-      ),
+      {
+        protocol: "https",
+        hostname: "ovkgdfloifzxmvrarmmq.supabase.co",
+        pathname: "/storage/v1/object/sign/images/**",
+      },
     ],
   },
   experimental: {
