@@ -2,6 +2,7 @@
 
 import exifr from "exifr";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
 import {
@@ -22,6 +23,7 @@ export default function SelectFile() {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
 
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fileURL = useMemo(
@@ -38,10 +40,9 @@ export default function SelectFile() {
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) {
-      resetForm(state.error);
-    }
-  }, [state]);
+    if (state?.error) resetForm(state.error);
+    if (state?.slug) router.push(`/${state.slug}`);
+  }, [state, router]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];

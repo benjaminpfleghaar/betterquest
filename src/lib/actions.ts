@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { formSchema } from "@/lib/validation";
 
@@ -17,7 +16,7 @@ const mimeToExt: Record<string, string> = {
 export const handleSubmit = async (
   _: unknown,
   formData: FormData,
-): Promise<{ error: string | never }> => {
+): Promise<{ error?: string; slug?: string }> => {
   const slug = Date.now().toString(36); // unique identifier for url and file name
 
   try {
@@ -63,5 +62,5 @@ export const handleSubmit = async (
     return { error: "An unexpected error occurred. Please try again later." };
   }
 
-  redirect(`/${slug}`);
+  return { slug };
 };
