@@ -17,8 +17,6 @@ export const handleSubmit = async (
   _: unknown,
   formData: FormData,
 ): Promise<{ error?: string; slug?: string }> => {
-  const slug = Date.now().toString(36); // unique identifier for url and file name
-
   try {
     const validatedForm = formSchema.safeParse({
       file: formData.get("file"),
@@ -32,6 +30,7 @@ export const handleSubmit = async (
 
     const { file, latitude, longitude } = validatedForm.data;
 
+    const slug = Date.now().toString(36);
     const ext = mimeToExt[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
 
@@ -55,12 +54,12 @@ export const handleSubmit = async (
     if (locationError) {
       return { error: locationError.message };
     }
+
+    return { slug };
   } catch (err) {
     if (err instanceof Error) {
       return { error: err.message };
     }
     return { error: "An unexpected error occurred. Please try again later." };
   }
-
-  return { slug };
 };
