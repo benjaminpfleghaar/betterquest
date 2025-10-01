@@ -5,14 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
-import {
-  ChangeEvent,
-  useActionState,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function SelectFile() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
@@ -104,6 +97,7 @@ export default function SelectFile() {
           ref={inputRef}
           accept="image/*"
           onChange={handleChange}
+          disabled={isPending}
           className="hidden"
           name="file"
           required
