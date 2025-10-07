@@ -4,10 +4,11 @@ import exifr from "exifr";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
+import { CirclePlus, X } from "lucide-react";
 import { fileSchema } from "@/lib/validation";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
-export default function SelectFile() {
+export default function Form() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
   const [location, setLocation] = useState<{
     latitude: number;
@@ -80,16 +81,41 @@ export default function SelectFile() {
   };
 
   return (
-    <>
+    <div className="w-sm rounded-2xl bg-white p-4 shadow-lg">
       {fileURL ? (
-        <div className="relative w-48 h-48">
+        <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image
             src={fileURL}
-            alt="Preview image"
+            alt="Selected photo"
             className="object-cover"
             fill
           />
+          <button
+            type="reset"
+            className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900"
+            onClick={() => resetForm()}
+            disabled={isPending}
+          >
+            <X size={16} strokeWidth={1.5} />
+            <span className="sr-only">Remove photo</span>
+          </button>
         </div>
+      ) : null}
+      {!file ? (
+        <button
+          type="button"
+          className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900"
+          onClick={() => inputRef.current?.click()}
+          aria-describedby={error ? "form-error" : undefined}
+        >
+          <CirclePlus strokeWidth={1.5} />
+          Add photo
+        </button>
+      ) : null}
+      {error ? (
+        <p id="form-error" role="alert">
+          {error}
+        </p>
       ) : null}
       <form action={formAction}>
         <input
@@ -108,34 +134,10 @@ export default function SelectFile() {
             <input type="hidden" name="longitude" value={location.longitude} />
           </>
         ) : null}
-        {file ? (
-          <div className="space-x-4">
-            <button
-              type="reset"
-              onClick={() => resetForm()}
-              disabled={isPending}
-            >
-              Reset
-            </button>
-            <button type="submit" disabled={isPending}>
-              {isPending ? "Loading..." : "Submit"}
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            aria-describedby={error ? "form-error" : undefined}
-          >
-            Select File
-          </button>
-        )}
+        <button type="submit" disabled={isPending}>
+          {isPending ? "Loading..." : "Submit"}
+        </button>
       </form>
-      {error ? (
-        <p id="form-error" role="alert">
-          {error}
-        </p>
-      ) : null}
-    </>
+    </div>
   );
 }

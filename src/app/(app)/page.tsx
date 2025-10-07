@@ -1,5 +1,9 @@
-import SelectFile from "@/components/select-file";
+import Form from "@/components/form";
 
 export default function Home() {
-  return <SelectFile />;
+  return (
+    <main className="flex min-h-svh items-center justify-center bg-stone-100 p-4">
+      <Form />
+    </main>
+  );
 }
