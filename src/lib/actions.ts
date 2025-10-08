@@ -22,6 +22,7 @@ export const handleSubmit = async (
       file: formData.get("file"),
       latitude: formData.get("latitude"),
       longitude: formData.get("longitude"),
+      description: formData.get("description"),
     });
 
     if (!validatedForm.success) {

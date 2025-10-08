@@ -1,4 +1,5 @@
 import "../globals.css";
+import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.className} antialiased`}>{children}</body>
+      <body className={`${geist.className} antialiased`}>
+        {children}
+        <Toaster position="top-center" />
+      </body>
     </html>
   );
 }

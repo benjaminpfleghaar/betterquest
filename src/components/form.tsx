@@ -2,6 +2,7 @@
 
 import exifr from "exifr";
 import Image from "next/image";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
 import { CirclePlus, X } from "lucide-react";
@@ -10,12 +11,11 @@ import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } fro
 
 export default function Form() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
+  const [file, setFile] = useState<File | null>(null);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState("");
 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ export default function Form() {
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) resetForm(state.error);
+    if (state?.error) resetFile(state.error);
     if (state?.slug) router.push(`/${state.slug}`);
   }, [state, router]);
 
@@ -48,7 +48,7 @@ export default function Form() {
     const validatedFile = fileSchema.safeParse(selectedFile);
 
     if (!validatedFile.success) {
-      resetForm(validatedFile.error.issues[0].message);
+      resetFile(validatedFile.error.issues[0].message);
       return;
     }
 
@@ -56,7 +56,7 @@ export default function Form() {
       const gpsData = await exifr.gps(validatedFile.data);
 
       if (!gpsData) {
-        resetForm("No GPS data available");
+        resetFile("No GPS data available");
         return;
       }
 
@@ -64,20 +64,22 @@ export default function Form() {
       setLocation({
         ...gpsData,
       });
-      setError("");
     } catch {
-      resetForm("Failed to read EXIF metadata");
+      resetFile("Failed to read EXIF metadata");
     }
   };
 
-  const resetForm = (err?: string) => {
+  const resetFile = (err?: string) => {
     if (inputRef.current) {
       inputRef.current.value = "";
     }
 
     setFile(null);
     setLocation(null);
-    setError(err ?? "");
+
+    if (err) {
+      toast.warning(err);
+    }
   };
 
   return (
@@ -93,7 +95,7 @@ export default function Form() {
           <button
             type="reset"
             className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 disabled:cursor-default"
-            onClick={() => resetForm()}
+            onClick={() => resetFile()}
             disabled={isPending}
           >
             <X size={16} />
@@ -106,26 +108,12 @@ export default function Form() {
           type="button"
           className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900"
           onClick={() => inputRef.current?.click()}
-          aria-describedby={error ? "form-error" : undefined}
         >
           <CirclePlus strokeWidth={1.5} />
           Add photo
         </button>
       ) : null}
-      <textarea
-        name="description"
-        className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600 disabled:bg-stone-100 disabled:text-stone-600"
-        placeholder="Describe the issue"
-        disabled={isPending}
-        maxLength={200}
-        required
-      ></textarea>
-      {error ? (
-        <p id="form-error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <form action={formAction}>
+      <form className="space-y-4" action={formAction}>
         <input
           type="file"
           ref={inputRef}
@@ -142,6 +130,13 @@ export default function Form() {
             <input type="hidden" name="longitude" value={location.longitude} />
           </>
         ) : null}
+        <textarea
+          name="description"
+          className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600 disabled:bg-stone-100 disabled:text-stone-600"
+          placeholder="Describe the issue"
+          disabled={isPending}
+          maxLength={200}
+        ></textarea>
         <button
           type="submit"
           className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-600"
