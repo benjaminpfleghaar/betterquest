@@ -81,7 +81,7 @@ export default function Form() {
   };
 
   return (
-    <div className="w-sm rounded-2xl bg-white p-4 shadow-lg">
+    <div className="w-sm space-y-2 rounded-2xl bg-white p-4 shadow-lg">
       {fileURL ? (
         <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image
@@ -92,11 +92,11 @@ export default function Form() {
           />
           <button
             type="reset"
-            className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900"
+            className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 disabled:cursor-default"
             onClick={() => resetForm()}
             disabled={isPending}
           >
-            <X size={16} strokeWidth={1.5} />
+            <X size={16} />
             <span className="sr-only">Remove photo</span>
           </button>
         </div>
@@ -112,6 +112,14 @@ export default function Form() {
           Add photo
         </button>
       ) : null}
+      <textarea
+        name="description"
+        className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600 disabled:bg-stone-100 disabled:text-stone-600"
+        placeholder="Describe the issue"
+        disabled={isPending}
+        maxLength={200}
+        required
+      ></textarea>
       {error ? (
         <p id="form-error" role="alert">
           {error}
@@ -134,8 +142,16 @@ export default function Form() {
             <input type="hidden" name="longitude" value={location.longitude} />
           </>
         ) : null}
-        <button type="submit" disabled={isPending}>
-          {isPending ? "Loading..." : "Submit"}
+        <button
+          type="submit"
+          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-600"
+          disabled={!file || isPending}
+        >
+          {isPending ? (
+            <div className="size-4 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
+          ) : (
+            "Create link"
+          )}
         </button>
       </form>
     </div>
