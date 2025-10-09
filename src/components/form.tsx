@@ -83,7 +83,7 @@ export default function Form() {
   };
 
   return (
-    <div className="w-sm space-y-2 rounded-2xl bg-white p-4 shadow-lg">
+    <div className="space-y-2 rounded-2xl bg-white p-4 shadow-xl">
       {fileURL ? (
         <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image
