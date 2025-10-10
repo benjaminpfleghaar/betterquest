@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Form from "@/components/form";
+import Logo from "@/components/logo";
 import { jakarta } from "@/lib/fonts";
-import Brand from "@/components/brand";
 import { Camera, Share2, Upload } from "lucide-react";
 
 const usps = [
@@ -27,7 +27,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[352px_auto] lg:gap-12">
             <Form />
             <div className="order-first pt-0 text-white lg:order-none lg:pt-4">
-              <Brand variant="destructive" className="mb-4" />
+              <Logo variant="destructive" className="mb-4" />
               <h1
                 className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
               >

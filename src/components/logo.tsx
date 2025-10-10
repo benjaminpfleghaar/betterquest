@@ -1,27 +1,37 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { jakarta } from "@/lib/fonts";
-import { cva, type VariantProps } from "class-variance-authority";
 
-const brand = cva("flex size-10 items-center justify-center rounded-lg", {
-  variants: {
-    variant: {
-      default: "bg-stone-900 text-stone-900",
-      destructive: "bg-red-500 text-white",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-});
+interface LogoProps {
+  variant?: "default" | "destructive";
+  className?: string;
+}
 
-export default function Brand({
-  className,
-  variant,
-}: React.ComponentProps<"a"> & VariantProps<typeof brand>) {
+const logo = {
+  default: {
+    icon: "bg-stone-900",
+    label: "text-stone-900",
+  },
+  destructive: {
+    icon: "bg-red-500",
+    label: "text-white",
+  },
+};
+
+export default function Logo({ className, variant = "default" }: LogoProps) {
+  const { icon, label } = logo[variant];
+
   return (
-    <Link href="/" className={cn("inline-flex items-center gap-3", className)}>
-      <div className={cn(brand({ variant }))}>
+    <Link
+      href="/"
+      className={cn(className, "inline-flex items-center gap-3", label)}
+    >
+      <div
+        className={cn(
+          "flex size-10 items-center justify-center rounded-lg",
+          icon,
+        )}
+      >
         <svg
           width="22"
           height="20"
