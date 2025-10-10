@@ -51,7 +51,13 @@ export default function Home() {
         </div>
       </main>
       <div className="fixed inset-0 -z-10 bg-teal-950">
-        <Image src="/forest.jpg" objectFit="cover" alt="" priority fill />
+        <Image
+          src="/forest.jpg"
+          className="object-cover"
+          alt=""
+          priority
+          fill
+        />
       </div>
     </>
   );

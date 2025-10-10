@@ -86,7 +86,12 @@ export default function Form() {
     <div className="space-y-2 rounded-2xl bg-white p-4 shadow-xl">
       {fileURL ? (
         <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
-          <Image src={fileURL} alt="Selected photo" objectFit="cover" fill />
+          <Image
+            src={fileURL}
+            alt="Selected photo"
+            className="object-cover"
+            fill
+          />
           <button
             type="reset"
             className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 disabled:cursor-default"
