@@ -1,11 +1,7 @@
 import "../globals.css";
+import { Toaster } from "sonner";
+import { geist } from "@/lib/fonts";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-
-const geist = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Home",
@@ -19,7 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.className} antialiased`}>{children}</body>
+      <body className={`${geist.className} antialiased`}>
+        {children}
+        <Toaster position="top-center" />
+      </body>
     </html>
   );
 }

@@ -28,4 +28,8 @@ export const formSchema = z.object({
     .number()
     .min(-180, "Longitude must be between -180 and 180")
     .max(180, "Longitude must be between -180 and 180"),
+  description: z
+    .string()
+    .nonempty("Description can not be empty")
+    .max(200, "The description can not have more than 200 characters"),
 });

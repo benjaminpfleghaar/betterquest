@@ -1,5 +1,66 @@
-import SelectFile from "@/components/select-file";
+import Image from "next/image";
+import Form from "@/components/form";
+import Logo from "@/components/logo";
+import { jakarta } from "@/lib/fonts";
+import { Camera, Share2, Upload } from "lucide-react";
+
+const usps = [
+  {
+    icon: <Camera size={16} aria-hidden="true" />,
+    label: "Snap a photo with GPS turned on",
+  },
+  {
+    icon: <Upload size={16} aria-hidden="true" />,
+    label: "Upload it to generate your shareable link",
+  },
+  {
+    icon: <Share2 size={16} aria-hidden="true" />,
+    label: "Share it with your riding group",
+  },
+];
 
 export default function Home() {
-  return <SelectFile />;
+  return (
+    <main className="flex min-h-svh items-center justify-center p-6">
+      <div className="fixed inset-0 -z-10 bg-teal-950">
+        <Image
+          src="/forest.jpg"
+          className="object-cover"
+          alt="Photo of a path leading through a forest"
+          placeholder="blur"
+          blurDataURL="/forest-blur.jpg"
+          fill
+        />
+      </div>
+      <div className="grid w-full max-w-sm grid-cols-1 gap-6 lg:max-w-4xl lg:grid-cols-[22rem_1fr] lg:gap-12">
+        <aside aria-label="Submit your report">
+          <Form />
+        </aside>
+        <section
+          className="order-first pt-0 text-white lg:order-none lg:pt-4"
+          aria-labelledby="title"
+        >
+          <Logo variant="destructive" className="mb-4" />
+          <h1
+            id="title"
+            className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
+          >
+            Keep your trails safe by reporting issues
+          </h1>
+          <h2 className="mb-6">
+            Upload a photo with GPS info to create a shareable link. Help riders
+            stay informed about trail conditions and potential hazards.
+          </h2>
+          <ol className="space-y-2">
+            {usps.map(({ icon, label }) => (
+              <li key={label} className="flex items-center gap-2 text-sm">
+                {icon}
+                <span>{label}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
+    </main>
+  );
 }
