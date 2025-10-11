@@ -6,16 +6,16 @@ import { Camera, Share2, Upload } from "lucide-react";
 
 const usps = [
   {
-    icon: <Camera size={16} />,
-    label: "Take a photo with GPS enabled",
+    icon: <Camera size={16} aria-hidden="true" />,
+    label: "Snap a photo with GPS turned on",
   },
   {
-    icon: <Upload size={16} />,
-    label: "Upload the photo to get a shareable link",
+    icon: <Upload size={16} aria-hidden="true" />,
+    label: "Upload it to generate your shareable link",
   },
   {
-    icon: <Share2 size={16} />,
-    label: "Share the link with your riding group",
+    icon: <Share2 size={16} aria-hidden="true" />,
+    label: "Share it with your riding group",
   },
 ];
 
@@ -26,35 +26,41 @@ export default function Home() {
         <Image
           src="/forest.jpg"
           className="object-cover"
-          alt=""
-          priority
+          alt="Photo of a path leading through a forest"
+          placeholder="blur"
+          blurDataURL="/forest-blur.jpg"
           fill
         />
       </div>
       <div className="w-full max-w-sm lg:max-w-4xl">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[352px_auto] lg:gap-12">
-          <Form />
-          <div className="order-first pt-0 text-white lg:order-none lg:pt-4">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[22rem_1fr] lg:gap-12">
+          <aside aria-label="Submit your report">
+            <Form />
+          </aside>
+          <section
+            className="order-first pt-0 text-white lg:order-none lg:pt-4"
+            aria-labelledby="title"
+          >
             <Logo variant="destructive" className="mb-4" />
             <h1
+              id="title"
               className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
             >
               Keep your trails safe by reporting issues
             </h1>
             <h2 className="mb-6">
-              Upload a trail photo to generate a shareable link with gps
-              location data and details, helping riders stay updated on trail
-              conditions.
+              Upload a photo with GPS info to create a shareable link. Help
+              riders stay informed about trail conditions and potential hazards.
             </h2>
-            <ul className="space-y-2">
+            <ol className="space-y-2">
               {usps.map(({ icon, label }) => (
                 <li key={label} className="flex items-center gap-2 text-sm">
                   {icon}
-                  {label}
+                  <span>{label}</span>
                 </li>
               ))}
-            </ul>
-          </div>
+            </ol>
+          </section>
         </div>
       </div>
     </main>
