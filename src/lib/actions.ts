@@ -29,7 +29,7 @@ export const handleSubmit = async (
       return { error: validatedForm.error.issues[0].message };
     }
 
-    const { file, latitude, longitude } = validatedForm.data;
+    const { file, latitude, longitude, description } = validatedForm.data;
 
     const slug = Date.now().toString(36);
     const ext = mimeToExt[file.type] ?? "bin";
@@ -50,6 +50,7 @@ export const handleSubmit = async (
       image: storage.path,
       latitude,
       longitude,
+      description,
     });
 
     if (locationError) {

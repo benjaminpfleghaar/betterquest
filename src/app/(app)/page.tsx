@@ -54,7 +54,7 @@ export default function Home() {
             {usps.map(({ icon, label }) => (
               <li key={label} className="flex items-center gap-2 text-sm">
                 {icon}
-                <span>{label}</span>
+                {label}
               </li>
             ))}
           </ol>

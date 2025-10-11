@@ -2,16 +2,16 @@
 
 import exifr from "exifr";
 import Image from "next/image";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
-import { CirclePlus, X } from "lucide-react";
 import { fileSchema } from "@/lib/validation";
+import { CirclePlus, OctagonAlert, X } from "lucide-react";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function Form() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
   const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState("");
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -64,6 +64,7 @@ export default function Form() {
       setLocation({
         ...gpsData,
       });
+      setError("");
     } catch {
       resetFile("Failed to read EXIF metadata");
     }
@@ -78,12 +79,22 @@ export default function Form() {
     setLocation(null);
 
     if (err) {
-      toast.warning(err);
+      // toast.warning(err);
+      setError(err);
     }
   };
 
   return (
     <div className="space-y-2 rounded-2xl bg-white p-4 shadow-xl">
+      {error ? (
+        <div
+          className="flex items-center gap-2 rounded-lg bg-red-100 p-3.5 text-sm text-red-600"
+          role="alert"
+        >
+          <OctagonAlert size={16} />
+          <span>{error}</span>
+        </div>
+      ) : null}
       {fileURL ? (
         <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image
