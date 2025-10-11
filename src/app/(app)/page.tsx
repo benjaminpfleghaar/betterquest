@@ -21,35 +21,7 @@ const usps = [
 
 export default function Home() {
   return (
-    <>
-      <main className="flex min-h-svh items-center justify-center p-6">
-        <div className="w-full max-w-sm lg:max-w-4xl">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[352px_auto] lg:gap-12">
-            <Form />
-            <div className="order-first pt-0 text-white lg:order-none lg:pt-4">
-              <Logo variant="destructive" className="mb-4" />
-              <h1
-                className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
-              >
-                Keep your trails safe by reporting issues
-              </h1>
-              <h2 className="mb-6">
-                Upload a trail photo to generate a shareable link with gps
-                location data and details, helping riders stay updated on trail
-                conditions.
-              </h2>
-              <ul className="space-y-2">
-                {usps.map(({ icon, label }) => (
-                  <li key={label} className="flex items-center gap-2 text-sm">
-                    {icon}
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </main>
+    <main className="flex min-h-svh items-center justify-center p-6">
       <div className="fixed inset-0 -z-10 bg-teal-950">
         <Image
           src="/forest.jpg"
@@ -59,6 +31,32 @@ export default function Home() {
           fill
         />
       </div>
-    </>
+      <div className="w-full max-w-sm lg:max-w-4xl">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[352px_auto] lg:gap-12">
+          <Form />
+          <div className="order-first pt-0 text-white lg:order-none lg:pt-4">
+            <Logo variant="destructive" className="mb-4" />
+            <h1
+              className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
+            >
+              Keep your trails safe by reporting issues
+            </h1>
+            <h2 className="mb-6">
+              Upload a trail photo to generate a shareable link with gps
+              location data and details, helping riders stay updated on trail
+              conditions.
+            </h2>
+            <ul className="space-y-2">
+              {usps.map(({ icon, label }) => (
+                <li key={label} className="flex items-center gap-2 text-sm">
+                  {icon}
+                  {label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
