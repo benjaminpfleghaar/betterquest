@@ -32,36 +32,34 @@ export default function Home() {
           fill
         />
       </div>
-      <div className="w-full max-w-sm lg:max-w-4xl">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[22rem_1fr] lg:gap-12">
-          <aside aria-label="Submit your report">
-            <Form />
-          </aside>
-          <section
-            className="order-first pt-0 text-white lg:order-none lg:pt-4"
-            aria-labelledby="title"
+      <div className="grid w-full max-w-sm grid-cols-1 gap-6 lg:max-w-4xl lg:grid-cols-[22rem_1fr] lg:gap-12">
+        <aside aria-label="Submit your report">
+          <Form />
+        </aside>
+        <section
+          className="order-first pt-0 text-white lg:order-none lg:pt-4"
+          aria-labelledby="title"
+        >
+          <Logo variant="destructive" className="mb-4" />
+          <h1
+            id="title"
+            className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
           >
-            <Logo variant="destructive" className="mb-4" />
-            <h1
-              id="title"
-              className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
-            >
-              Keep your trails safe by reporting issues
-            </h1>
-            <h2 className="mb-6">
-              Upload a photo with GPS info to create a shareable link. Help
-              riders stay informed about trail conditions and potential hazards.
-            </h2>
-            <ol className="space-y-2">
-              {usps.map(({ icon, label }) => (
-                <li key={label} className="flex items-center gap-2 text-sm">
-                  {icon}
-                  <span>{label}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
+            Keep your trails safe by reporting issues
+          </h1>
+          <h2 className="mb-6">
+            Upload a photo with GPS info to create a shareable link. Help riders
+            stay informed about trail conditions and potential hazards.
+          </h2>
+          <ol className="space-y-2">
+            {usps.map(({ icon, label }) => (
+              <li key={label} className="flex items-center gap-2 text-sm">
+                {icon}
+                <span>{label}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
       </div>
     </main>
   );
