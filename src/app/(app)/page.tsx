@@ -33,16 +33,15 @@ export default function Home() {
         />
       </div>
       <div className="grid w-full max-w-sm grid-cols-1 gap-6 lg:max-w-4xl lg:grid-cols-[22rem_1fr] lg:gap-12">
-        <aside aria-label="Submit your report">
+        <aside>
           <Form />
         </aside>
         <section
+          aria-label="Keep your trails safe by reporting issues"
           className="order-first pt-0 text-white lg:order-none lg:pt-4"
-          aria-labelledby="title"
         >
           <Logo variant="destructive" className="mb-4" />
           <h1
-            id="title"
             className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
           >
             Keep your trails safe by reporting issues
