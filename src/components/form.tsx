@@ -2,7 +2,6 @@
 
 import exifr from "exifr";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
 import { CirclePlus, OctagonAlert, X } from "lucide-react";
@@ -17,9 +16,7 @@ export default function Form() {
     longitude: number;
   } | null>(null);
 
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-
   const fileURL = useMemo(
     () => (file ? URL.createObjectURL(file) : null),
     [file],
@@ -35,8 +32,7 @@ export default function Form() {
 
   useEffect(() => {
     if (state?.error) resetFile(state.error);
-    if (state?.slug) router.push(`/${state.slug}`);
-  }, [state, router]);
+  }, [state?.error]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -45,14 +41,14 @@ export default function Form() {
       return;
     }
 
-    const validatedFile = fileSchema.safeParse(selectedFile);
-
-    if (!validatedFile.success) {
-      resetFile(validatedFile.error.issues[0].message);
-      return;
-    }
-
     try {
+      const validatedFile = fileSchema.safeParse(selectedFile);
+
+      if (!validatedFile.success) {
+        resetFile(validatedFile.error.issues[0].message);
+        return;
+      }
+
       const gpsData = await exifr.gps(validatedFile.data);
 
       if (!gpsData) {
@@ -61,12 +57,15 @@ export default function Form() {
       }
 
       setFile(validatedFile.data);
-      setLocation({
-        ...gpsData,
-      });
+      setLocation(gpsData);
       setError("");
-    } catch {
-      resetFile("Failed to read EXIF metadata");
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again later.";
+
+      resetFile(message);
     }
   };
 
@@ -79,7 +78,6 @@ export default function Form() {
     setLocation(null);
 
     if (err) {
-      // toast.warning(err);
       setError(err);
     }
   };
@@ -92,7 +90,7 @@ export default function Form() {
           role="alert"
         >
           <OctagonAlert size={16} />
-          <span>{error}</span>
+          {error}
         </div>
       ) : null}
       {fileURL ? (

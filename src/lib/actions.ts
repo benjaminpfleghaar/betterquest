@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { MIME_TYPES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase";
 import { formSchema } from "@/lib/validation";
@@ -7,7 +8,9 @@ import { formSchema } from "@/lib/validation";
 export const handleSubmit = async (
   _: unknown,
   formData: FormData,
-): Promise<{ error?: string; slug?: string }> => {
+): Promise<{ error: string }> => {
+  const slug = Date.now().toString(36);
+
   try {
     const validatedForm = formSchema.safeParse({
       file: formData.get("file"),
@@ -22,7 +25,6 @@ export const handleSubmit = async (
 
     const { file, latitude, longitude, description } = validatedForm.data;
 
-    const slug = Date.now().toString(36);
     const ext = MIME_TYPES[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
 
@@ -47,12 +49,14 @@ export const handleSubmit = async (
     if (locationError) {
       return { error: locationError.message };
     }
-
-    return { slug };
   } catch (err) {
-    if (err instanceof Error) {
-      return { error: err.message };
-    }
-    return { error: "An unexpected error occurred. Please try again later." };
+    const message =
+      err instanceof Error
+        ? err.message
+        : "An unexpected error occurred. Please try again later.";
+
+    return { error: message };
   }
+
+  redirect(`/${slug}`);
 };
