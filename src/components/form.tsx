@@ -32,7 +32,7 @@ export default function Form() {
 
   useEffect(() => {
     if (state?.error) resetFile(state.error);
-  }, [state?.error]);
+  }, [state]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
