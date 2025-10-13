@@ -83,10 +83,16 @@ export default function Form() {
   };
 
   return (
-    <div className="space-y-2 rounded-2xl bg-white p-4 shadow-xl">
+    <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-xl">
+      {isPending ? (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/80 text-sm font-medium text-stone-900 backdrop-blur-[2px]">
+          <div className="size-5 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
+          Loading...
+        </div>
+      ) : null}
       {error ? (
         <div
-          className="flex items-center gap-2 rounded-lg bg-red-100 p-3.5 text-sm text-red-600"
+          className="mb-2 flex items-center gap-2 rounded-lg bg-red-100 p-3.5 text-sm text-red-600"
           role="alert"
         >
           <OctagonAlert size={16} />
@@ -94,7 +100,7 @@ export default function Form() {
         </div>
       ) : null}
       {fileURL ? (
-        <div className="relative aspect-video overflow-hidden rounded-lg bg-stone-100">
+        <div className="relative mb-2 aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image
             src={fileURL}
             alt="Selected photo"
@@ -115,7 +121,7 @@ export default function Form() {
       {!file ? (
         <button
           type="button"
-          className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900"
+          className="mb-2 flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900"
           onClick={() => inputRef.current?.click()}
         >
           <CirclePlus strokeWidth={1.5} />
@@ -141,7 +147,7 @@ export default function Form() {
         ) : null}
         <textarea
           name="description"
-          className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600 disabled:bg-stone-100 disabled:text-stone-600"
+          className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600"
           placeholder="Describe the issue"
           disabled={isPending}
           maxLength={200}
@@ -151,11 +157,7 @@ export default function Form() {
           className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-600"
           disabled={!file || isPending}
         >
-          {isPending ? (
-            <div className="size-4 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
-          ) : (
-            "Create link"
-          )}
+          Create link
         </button>
       </form>
     </div>
