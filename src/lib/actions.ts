@@ -1,17 +1,8 @@
 "use server";
 
+import { MIME_TYPES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase";
 import { formSchema } from "@/lib/validation";
-
-const mimeToExt: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/gif": "gif",
-  "image/heic": "heic",
-  "image/heif": "heif",
-  "image/tiff": "tiff",
-};
 
 export const handleSubmit = async (
   _: unknown,
@@ -32,7 +23,7 @@ export const handleSubmit = async (
     const { file, latitude, longitude, description } = validatedForm.data;
 
     const slug = Date.now().toString(36);
-    const ext = mimeToExt[file.type] ?? "bin";
+    const ext = MIME_TYPES[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
 
     const supabase = await createClient();
