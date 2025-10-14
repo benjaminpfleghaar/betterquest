@@ -150,6 +150,7 @@ export default function Form() {
           name="description"
           className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600"
           placeholder="Describe the issue"
+          aria-label="Provide description"
           disabled={isPending}
           maxLength={200}
         ></textarea>
