@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MapPin } from "lucide-react";
+import Map from "@/components/map";
 import { jakarta } from "@/lib/fonts";
 
 export default async function Location({ slug }: { slug: string }) {
@@ -27,22 +27,7 @@ export default async function Location({ slug }: { slug: string }) {
 
   return (
     <>
-      <div className="relative aspect-video bg-stone-200">
-        <Image
-          src={"/forest.jpg"}
-          alt="Preview photo"
-          className="object-cover"
-          priority
-          fill
-        />
-        <button
-          type="reset"
-          className="absolute -bottom-6 right-6 flex size-16 cursor-pointer items-center justify-center rounded-lg border-2 border-white bg-emerald-50 text-stone-900 disabled:cursor-default"
-        >
-          <MapPin size={16} />
-          <span className="sr-only">Show Map</span>
-        </button>
-      </div>
+      <Map photo="/forest.jpg" />
       <div className="p-6 space-y-4">
         <div className="grid grid-cols-[3rem_1fr] items-center gap-4">
           <Image src="/sign.svg" width={48} height={48} alt="" />
