@@ -21,7 +21,7 @@ const usps = [
 
 export default function Home() {
   return (
-    <main className="flex min-h-svh items-center justify-center p-6">
+    <main className="flex min-h-svh items-start justify-center p-4 lg:items-center">
       <div className="fixed inset-0 -z-10 bg-teal-950">
         <Image
           src="/forest.jpg"

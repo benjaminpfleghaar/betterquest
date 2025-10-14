@@ -4,7 +4,7 @@ import { geist } from "@/lib/fonts";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "betterquest",
   description: "Lorem ipsum dolor sit amet",
 };
 
