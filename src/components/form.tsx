@@ -16,6 +16,7 @@ export default function Form() {
     longitude: number;
   } | null>(null);
 
+  const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileURL = useMemo(
     () => (file ? URL.createObjectURL(file) : null),
@@ -31,7 +32,7 @@ export default function Form() {
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) resetFile(state.error);
+    if (state?.error) resetForm(state.error);
   }, [state]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +46,14 @@ export default function Form() {
       const validatedFile = fileSchema.safeParse(selectedFile);
 
       if (!validatedFile.success) {
-        resetFile(validatedFile.error.issues[0].message);
+        resetForm(validatedFile.error.issues[0].message);
         return;
       }
 
       const gpsData = await exifr.gps(validatedFile.data);
 
       if (!gpsData) {
-        resetFile("No GPS data available");
+        resetForm("No GPS data available");
         return;
       }
 
@@ -65,13 +66,13 @@ export default function Form() {
           ? err.message
           : "An unexpected error occurred. Please try again later.";
 
-      resetFile(message);
+      resetForm(message);
     }
   };
 
-  const resetFile = (err?: string) => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
+  const resetForm = (err?: string) => {
+    if (formRef.current) {
+      formRef.current.reset();
     }
 
     setFile(null);
@@ -110,7 +111,7 @@ export default function Form() {
           <button
             type="reset"
             className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 disabled:cursor-default"
-            onClick={() => resetFile()}
+            onClick={() => resetForm()}
             disabled={isPending}
           >
             <X size={16} />
@@ -128,7 +129,7 @@ export default function Form() {
           Add photo
         </button>
       ) : null}
-      <form className="space-y-4" action={formAction}>
+      <form className="space-y-4" action={formAction} ref={formRef}>
         <input
           type="file"
           ref={inputRef}
