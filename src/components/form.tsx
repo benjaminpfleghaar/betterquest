@@ -85,7 +85,7 @@ export default function Form() {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-xl">
       {isPending ? (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/80 text-sm font-medium text-stone-900 backdrop-blur-[2px]">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/90 text-sm font-medium text-stone-900">
           <div className="size-5 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
           Loading...
         </div>
