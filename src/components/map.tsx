@@ -1,49 +1,26 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import { MapPin } from "lucide-react";
+import "leaflet/dist/leaflet.css";
+import { LatLngExpression, LatLngTuple } from "leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 
-export default function Map({ photo }: { photo: string }) {
-  const [toggleMap, setToggleMap] = useState(false);
+interface MapProps {
+  position: LatLngExpression | LatLngTuple;
+}
 
-  const photoView = (
-    <>
-      <Image
-        src={photo}
-        alt="Preview photo"
-        className="object-cover"
-        priority
-        fill
-      />
-      <button
-        type="reset"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center rounded-lg border-2 border-white bg-emerald-50 text-stone-900"
-        onClick={() => setToggleMap(!toggleMap)}
-      >
-        <MapPin size={16} />
-        <span className="sr-only">Show Map</span>
-      </button>
-    </>
-  );
-
-  const mapView = (
-    <>
-      KARTE
-      <button
-        type="reset"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white bg-stone-200"
-        onClick={() => setToggleMap(!toggleMap)}
-      >
-        <Image src={photo} className="object-cover" alt="" fill />
-        <span className="sr-only">Show Photo</span>
-      </button>
-    </>
-  );
-
+export default function Map({ position }: MapProps) {
   return (
-    <div className="relative aspect-video bg-stone-200">
-      {toggleMap ? mapView : photoView}
-    </div>
+    <MapContainer
+      zoom={13}
+      center={position}
+      zoomControl={false}
+      className="z-0 size-full"
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={position} />
+    </MapContainer>
   );
 }

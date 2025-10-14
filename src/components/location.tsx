@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Map from "@/components/map";
 import { jakarta } from "@/lib/fonts";
+import MapContainer from "@/components/map-container";
 
 export default async function Location({ slug }: { slug: string }) {
   await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -27,7 +27,10 @@ export default async function Location({ slug }: { slug: string }) {
 
   return (
     <>
-      <Map photo="/forest.jpg" />
+      <MapContainer
+        photo="/forest.jpg"
+        position={[49.177902777777774, 9.285983333333332]}
+      />
       <div className="p-6 space-y-4">
         <div className="grid grid-cols-[3rem_1fr] items-center gap-4">
           <Image src="/sign.svg" width={48} height={48} alt="" />
