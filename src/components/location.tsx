@@ -1,8 +1,7 @@
-import Image from "next/image";
-import { jakarta } from "@/lib/fonts";
-import { Link2, Map, Share2 } from "lucide-react";
-import MapContainer from "@/components/map-container";
 import Link from "next/link";
+import { jakarta } from "@/lib/fonts";
+import MapContainer from "@/components/map-container";
+import { Construction, Link2, Map, Share2 } from "lucide-react";
 
 const links = [
   {
@@ -23,7 +22,7 @@ const links = [
 ];
 
 export default async function Location({ slug }: { slug: string }) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   /*  const supabase = await createClient();
 
@@ -54,18 +53,26 @@ export default async function Location({ slug }: { slug: string }) {
             position={[49.177902777777774, 9.285983333333332]}
           />
           <div className="p-6 space-y-4">
-            <div className="grid grid-cols-[3rem_1fr] items-center gap-4">
-              <Image src="/sign.svg" width={48} height={48} alt="" />
+            <div className="grid grid-cols-[3rem_1fr] items-center gap-3 pl-1">
+              <div className="flex size-10 items-center justify-center text-white">
+                <div className="absolute size-10 rotate-45 rounded-lg bg-orange-400"></div>
+                <Construction
+                  strokeWidth={1.5}
+                  aria-hidden="true"
+                  className="absolute"
+                />
+              </div>
               <div>
                 <h1 className={`${jakarta.className} font-bold`}>
                   Trail is blocked
                 </h1>
-                <h2 className="text-sm text-stone-600">2 days ago</h2>
+                <h2 className="text-xs text-stone-600">2 days ago</h2>
               </div>
             </div>
             <p className="text-sm text-stone-600">
               Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore
+              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+              erat, sed diam voluptua.
             </p>
           </div>
         </div>
