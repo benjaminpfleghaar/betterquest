@@ -43,7 +43,7 @@ export default async function Page({
       </header>
       <main className="mx-auto w-full max-w-md lg:max-w-lg">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_3rem]">
-          <div className="relative overflow-hidden rounded-2xl bg-white shadow-lg">
+          <div className="relative overflow-hidden rounded-2xl border border-stone-200 bg-white">
             <Suspense
               fallback={
                 <div className="flex aspect-square flex-col items-center justify-center gap-2 text-sm font-medium text-stone-900">
