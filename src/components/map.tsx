@@ -1,4 +1,4 @@
-import "leaflet/dist/leaflet.css";
+import "@/styles/leaflet.css";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 
@@ -15,8 +15,8 @@ export default function Map({ position }: MapProps) {
       className="z-0 size-full"
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
       />
       <Marker position={position} />
     </MapContainer>
