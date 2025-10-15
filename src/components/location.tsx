@@ -1,28 +1,43 @@
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { jakarta } from "@/lib/fonts";
+import SocialLinks from "@/components/social-links";
 import MapContainer from "@/components/map-container";
-import { Construction, Link2, Map, Share2 } from "lucide-react";
+import { Axe, CircleQuestionMark, Construction, Trash2 } from "lucide-react";
 
-const links = [
-  {
-    icon: <Share2 size={16} aria-hidden="true" />,
-    label: "Share Link",
-    url: "/",
+const issue = {
+  blocked: {
+    title: "Trail is blocked",
+    background: "bg-orange-400",
+    icon: (
+      <Construction strokeWidth={1.5} aria-hidden="true" className="absolute" />
+    ),
   },
-  {
-    icon: <Map size={16} aria-hidden="true" />,
-    label: "Open Map",
-    url: "/",
+  modified: {
+    title: "Trail is modified",
+    background: "bg-blue-400",
+    icon: <Axe strokeWidth={1.5} aria-hidden="true" className="absolute" />,
   },
-  {
-    icon: <Link2 size={16} aria-hidden="true" />,
-    label: "Copy Link",
-    url: "/",
+  destroyed: {
+    title: "Trail is destroyed",
+    background: "bg-red-400",
+    icon: <Trash2 strokeWidth={1.5} aria-hidden="true" className="absolute" />,
   },
-];
+  other: {
+    title: "Other issue",
+    background: "bg-stone-400",
+    icon: (
+      <CircleQuestionMark
+        strokeWidth={1.5}
+        aria-hidden="true"
+        className="absolute"
+      />
+    ),
+  },
+};
 
 export default async function Location({ slug }: { slug: string }) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  const { title, background, icon } = issue["blocked"];
 
   /*  const supabase = await createClient();
 
@@ -55,17 +70,16 @@ export default async function Location({ slug }: { slug: string }) {
           <div className="p-6 space-y-4">
             <div className="grid grid-cols-[3rem_1fr] items-center gap-3 pl-1">
               <div className="flex size-10 items-center justify-center text-white">
-                <div className="absolute size-10 rotate-45 rounded-lg bg-orange-400"></div>
-                <Construction
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                  className="absolute"
-                />
+                <div
+                  className={cn(
+                    "absolute size-10 rotate-45 rounded-lg",
+                    background,
+                  )}
+                ></div>
+                {icon}
               </div>
               <div>
-                <h1 className={`${jakarta.className} font-bold`}>
-                  Trail is blocked
-                </h1>
+                <h1 className={`${jakarta.className} font-bold`}>{title}</h1>
                 <h2 className="text-xs text-stone-600">2 days ago</h2>
               </div>
             </div>
@@ -76,19 +90,11 @@ export default async function Location({ slug }: { slug: string }) {
             </p>
           </div>
         </div>
-        <ul className="flex flex-row justify-center gap-2 lg:flex-col lg:justify-start">
-          {links.map(({ icon, label, url }) => (
-            <li key={label} className="flex items-center gap-2">
-              <Link
-                href={url}
-                className="flex size-12 items-center justify-center rounded-full border border-stone-200 bg-white"
-              >
-                {icon}
-                <span className="sr-only">{label}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <SocialLinks
+          lat={49.177902777777774}
+          lon={9.285983333333332}
+          issue={title}
+        />
       </div>
     </>
   );

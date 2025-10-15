@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geist.className} antialiased`}>
         {children}
-        <Toaster position="top-center" />
+        <Toaster />
       </body>
     </html>
   );
