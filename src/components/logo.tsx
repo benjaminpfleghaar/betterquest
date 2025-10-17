@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { jakarta } from "@/lib/fonts";
 
 interface LogoProps {
   variant?: "default" | "destructive";
@@ -35,11 +34,7 @@ export default function Logo({ className, variant = "default" }: LogoProps) {
       >
         <Image src="/logo.svg" width={22} height={20} alt="" />
       </div>
-      <span
-        className={`${jakarta.className} text-xl font-bold tracking-tighter`}
-      >
-        betterquest
-      </span>
+      <span className="text-xl font-bold tracking-tighter">betterquest</span>
     </Link>
   );
 }

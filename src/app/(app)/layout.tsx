@@ -1,7 +1,7 @@
 import "../globals.css";
 import { Toaster } from "sonner";
-import { geist } from "@/lib/fonts";
 import type { Metadata } from "next";
+import { geist, jakarta } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "betterquest",
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.className} antialiased`}>
+      <body className={`${geist.variable} ${jakarta.variable}`}>
         {children}
         <Toaster />
       </body>

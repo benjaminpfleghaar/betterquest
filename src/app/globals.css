@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme inline {
+    --font-geist: var(--font-geist);
+    --font-jakarta: var(--font-jakarta);
+}
+
+@layer base {
+    body {
+        @apply font-geist antialiased;
+    }
+}
+
+@layer components {
+    h1 {
+        @apply font-jakarta;
+    }
+}

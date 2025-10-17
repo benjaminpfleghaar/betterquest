@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { jakarta } from "@/lib/fonts";
 import SocialLinks from "@/components/social-links";
 import MapContainer from "@/components/map-container";
 import { Axe, CircleQuestionMark, Construction, Trash2 } from "lucide-react";
@@ -78,7 +77,7 @@ export default async function Location({ slug }: { slug: string }) {
               {icon}
             </div>
             <div>
-              <h1 className={`${jakarta.className} font-bold`}>{title}</h1>
+              <h1 className="font-bold">{title}</h1>
               <h2 className="text-xs text-stone-600">2 days ago</h2>
             </div>
           </div>

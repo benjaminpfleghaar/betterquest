@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Form from "@/components/form";
 import Logo from "@/components/logo";
-import { jakarta } from "@/lib/fonts";
 import { Camera, Share2, Upload } from "lucide-react";
 
 const usps = [
@@ -41,9 +40,7 @@ export default function Home() {
           className="order-first pt-0 text-white lg:order-none lg:pt-4"
         >
           <Logo variant="destructive" className="mb-4" />
-          <h1
-            className={`${jakarta.className} mb-6 text-4xl font-bold lg:text-5xl`}
-          >
+          <h1 className="mb-6 text-4xl font-bold lg:text-5xl">
             Keep your trails safe by reporting issues
           </h1>
           <h2 className="mb-6">
