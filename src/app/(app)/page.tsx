@@ -32,7 +32,7 @@ export default function Home() {
         />
       </div>
       <div className="grid w-full max-w-sm grid-cols-1 gap-6 lg:max-w-4xl lg:grid-cols-[22rem_1fr] lg:gap-12">
-        <aside>
+        <aside aria-label="Photo upload form">
           <Form />
         </aside>
         <section
