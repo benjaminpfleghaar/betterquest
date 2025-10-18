@@ -41,7 +41,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
       <li className="flex items-center gap-2">
         <button
           type="button"
-          className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white"
+          className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
           onClick={shareLink}
         >
           <Share2 size={16} />
@@ -51,7 +51,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
       <li className="flex items-center gap-2">
         <Link
           href={`https://maps.apple.com/place?coordinate=${lat}%2C${lon}`}
-          className="flex size-12 items-center justify-center rounded-full border border-stone-200 bg-white"
+          className="flex size-12 items-center justify-center rounded-full border border-stone-200 bg-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
           rel="nofollow noopener noreferrer"
           target="_blank"
         >
@@ -62,7 +62,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
       <li className="flex items-center gap-2">
         <button
           type="button"
-          className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white"
+          className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
           onClick={copyLink}
         >
           <Link2 size={16} />

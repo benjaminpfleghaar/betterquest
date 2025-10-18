@@ -36,7 +36,7 @@ export default function TypeSelector({ isPending }: { isPending: boolean }) {
       {types.map(({ value, label, icon: Icon }, index) => (
         <label
           key={label}
-          className="flex h-12 grow cursor-pointer items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-500 has-checked:border has-checked:border-stone-200 has-checked:bg-white has-checked:text-stone-900"
+          className="flex h-12 grow cursor-pointer items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-500 outline-offset-2 outline-blue-500 has-checked:border has-checked:border-stone-200 has-checked:bg-white has-checked:text-stone-900 has-focus-visible:outline-2"
         >
           <input
             name="type"

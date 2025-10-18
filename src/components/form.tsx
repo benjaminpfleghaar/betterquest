@@ -111,7 +111,7 @@ export default function Form() {
           />
           <button
             type="reset"
-            className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 disabled:cursor-default"
+            className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full bg-white text-stone-900 outline-offset-2 outline-blue-500 focus-visible:outline-2 disabled:cursor-default"
             onClick={() => resetForm()}
             disabled={isPending}
           >
@@ -123,7 +123,7 @@ export default function Form() {
       {!file ? (
         <button
           type="button"
-          className="mb-2 flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900"
+          className="mb-2 flex aspect-video w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg bg-stone-100 text-sm font-medium text-stone-900 outline-offset-2 outline-blue-500 focus-visible:outline-2"
           onClick={() => inputRef.current?.click()}
         >
           <CirclePlus strokeWidth={1.5} />
@@ -154,7 +154,7 @@ export default function Form() {
           </legend>
           <textarea
             name="description"
-            className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600"
+            className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 outline-offset-2 outline-blue-500 placeholder:text-stone-600 focus-visible:outline-2"
             placeholder="Describe the issue"
             aria-labelledby="description"
             disabled={isPending}
@@ -163,7 +163,7 @@ export default function Form() {
         </fieldset>
         <button
           type="submit"
-          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-500"
+          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white outline-offset-2 outline-blue-500 focus-visible:outline-2 disabled:pointer-events-none disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-500"
           disabled={!file || isPending}
         >
           Create link
