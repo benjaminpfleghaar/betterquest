@@ -44,7 +44,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
           className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white"
           onClick={shareLink}
         >
-          <Share2 size={16} aria-hidden="true" />
+          <Share2 size={16} />
           <span className="sr-only">Share Link</span>
         </button>
       </li>
@@ -55,7 +55,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
           rel="nofollow noopener noreferrer"
           target="_blank"
         >
-          <Map size={16} aria-hidden="true" />
+          <Map size={16} />
           <span className="sr-only">Copy Link</span>
         </Link>
       </li>
@@ -65,7 +65,7 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
           className="flex size-12 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white"
           onClick={copyLink}
         >
-          <Link2 size={16} aria-hidden="true" />
+          <Link2 size={16} />
           <span className="sr-only">Copy Link</span>
         </button>
       </li>

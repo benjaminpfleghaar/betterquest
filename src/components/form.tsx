@@ -4,6 +4,7 @@ import exifr from "exifr";
 import Image from "next/image";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
+import TypeSelector from "@/components/type-selector";
 import { CirclePlus, OctagonAlert, X } from "lucide-react";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
@@ -146,17 +147,23 @@ export default function Form() {
             <input type="hidden" name="longitude" value={location.longitude} />
           </>
         ) : null}
-        <textarea
-          name="description"
-          className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600"
-          placeholder="Describe the issue"
-          aria-label="Provide description"
-          disabled={isPending}
-          maxLength={200}
-        ></textarea>
+        <TypeSelector isPending={isPending} />
+        <fieldset>
+          <legend id="description" className="sr-only">
+            Describe the issue
+          </legend>
+          <textarea
+            name="description"
+            className="flex field-sizing-fixed h-24 w-full resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm text-stone-900 placeholder:text-stone-600"
+            placeholder="Describe the issue"
+            aria-labelledby="description"
+            disabled={isPending}
+            maxLength={200}
+          ></textarea>
+        </fieldset>
         <button
           type="submit"
-          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-600"
+          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-500"
           disabled={!file || isPending}
         >
           Create link

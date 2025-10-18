@@ -5,15 +5,15 @@ import { Camera, Share2, Upload } from "lucide-react";
 
 const usps = [
   {
-    icon: <Camera size={16} aria-hidden="true" />,
+    icon: Camera,
     label: "Snap a photo with GPS turned on",
   },
   {
-    icon: <Upload size={16} aria-hidden="true" />,
+    icon: Upload,
     label: "Upload it to generate your shareable link",
   },
   {
-    icon: <Share2 size={16} aria-hidden="true" />,
+    icon: Share2,
     label: "Share it with your riding group",
   },
 ];
@@ -48,9 +48,9 @@ export default function Home() {
             stay informed about trail conditions and potential hazards.
           </h2>
           <ol className="space-y-2">
-            {usps.map(({ icon, label }) => (
+            {usps.map(({ icon: Icon, label }) => (
               <li key={label} className="flex items-center gap-2 text-sm">
-                {icon}
+                <Icon size={16} />
                 {label}
               </li>
             ))}

@@ -7,36 +7,28 @@ const issue = {
   blocked: {
     title: "Trail is blocked",
     background: "bg-orange-400",
-    icon: (
-      <Construction strokeWidth={1.5} aria-hidden="true" className="absolute" />
-    ),
+    icon: Construction,
   },
   modified: {
     title: "Trail is modified",
     background: "bg-blue-400",
-    icon: <Axe strokeWidth={1.5} aria-hidden="true" className="absolute" />,
+    icon: Axe,
   },
   destroyed: {
     title: "Trail is destroyed",
     background: "bg-red-400",
-    icon: <Trash2 strokeWidth={1.5} aria-hidden="true" className="absolute" />,
+    icon: Trash2,
   },
   other: {
     title: "Other issue",
     background: "bg-stone-400",
-    icon: (
-      <CircleQuestionMark
-        strokeWidth={1.5}
-        aria-hidden="true"
-        className="absolute"
-      />
-    ),
+    icon: CircleQuestionMark,
   },
 };
 
 export default async function Location({ slug }: { slug: string }) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const { title, background, icon } = issue["blocked"];
+  const { title, background, icon: Icon } = issue["blocked"];
 
   /*  const supabase = await createClient();
 
@@ -74,7 +66,7 @@ export default async function Location({ slug }: { slug: string }) {
                   background,
                 )}
               ></div>
-              {icon}
+              <Icon strokeWidth={1.5} className="absolute" />
             </div>
             <div>
               <h1 className="font-bold">{title}</h1>

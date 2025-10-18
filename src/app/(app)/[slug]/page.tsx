@@ -20,7 +20,7 @@ export default async function Page({
           href="/"
           className="flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-stone-900 pr-4 pl-3 text-sm font-medium text-white"
         >
-          <CirclePlus size={16} aria-hidden="true" />
+          <CirclePlus size={16} />
           New
         </Link>
       </header>
