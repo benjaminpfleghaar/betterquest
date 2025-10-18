@@ -2,16 +2,16 @@
 
 import exifr from "exifr";
 import Image from "next/image";
+import { toast } from "sonner";
 import { handleSubmit } from "@/lib/actions";
 import { fileSchema } from "@/lib/validation";
 import TypeSelector from "@/components/type-selector";
-import { CirclePlus, OctagonAlert, X } from "lucide-react";
+import { CirclePlus, X } from "lucide-react";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function Form() {
   const [state, formAction, isPending] = useActionState(handleSubmit, null);
   const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState("");
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -60,7 +60,6 @@ export default function Form() {
 
       setFile(validatedFile.data);
       setLocation(gpsData);
-      setError("");
     } catch (err) {
       const message =
         err instanceof Error
@@ -80,7 +79,7 @@ export default function Form() {
     setLocation(null);
 
     if (err) {
-      setError(err);
+      toast.error(err);
     }
   };
 
@@ -90,15 +89,6 @@ export default function Form() {
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/90 text-sm font-medium text-stone-900">
           <div className="size-5 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
           Loading...
-        </div>
-      ) : null}
-      {error ? (
-        <div
-          className="mb-2 flex items-center gap-2 rounded-lg bg-red-100 p-3.5 text-sm text-red-600"
-          role="alert"
-        >
-          <OctagonAlert size={16} />
-          {error}
         </div>
       ) : null}
       {fileURL ? (
@@ -163,7 +153,7 @@ export default function Form() {
         </fieldset>
         <button
           type="submit"
-          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white outline-offset-2 outline-blue-500 focus-visible:outline-2 disabled:pointer-events-none disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-500"
+          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-stone-900 text-sm font-medium text-white outline-offset-2 outline-blue-500 focus-visible:outline-2 disabled:cursor-default disabled:bg-stone-100 disabled:text-stone-500"
           disabled={!file || isPending}
         >
           Create link
