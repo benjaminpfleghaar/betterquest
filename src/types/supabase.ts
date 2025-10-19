@@ -48,15 +48,17 @@ export type Database = {
           latitude: number;
           longitude: number;
           slug: string;
+          type: string;
         };
         Insert: {
           created_at?: string;
           description: string;
           id?: number;
-          image?: string;
+          image: string;
           latitude: number;
           longitude: number;
-          slug?: string;
+          slug: string;
+          type: string;
         };
         Update: {
           created_at?: string;
@@ -66,6 +68,7 @@ export type Database = {
           latitude?: number;
           longitude?: number;
           slug?: string;
+          type?: string;
         };
         Relationships: [];
       };
