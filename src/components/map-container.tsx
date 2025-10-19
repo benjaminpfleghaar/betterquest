@@ -19,10 +19,10 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
 
   const photoView = (
     <>
-      <Image src={photo} className="object-cover" alt="Photo" priority fill />
+      <Image src={photo} className="object-cover" alt="Photo" fill />
       <button
         type="button"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
+        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
         onClick={() => setToggleMap(!toggleMap)}
       >
         <Image src="/map-preview.png" width={240} height={240} alt="" />
@@ -36,7 +36,7 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
       <Map position={position} />
       <button
         type="button"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
+        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
         onClick={() => setToggleMap(!toggleMap)}
       >
         <Image src={photo} className="object-cover" alt="" fill />
@@ -46,7 +46,7 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
   );
 
   return (
-    <div className="relative aspect-video bg-stone-200">
+    <div className="relative aspect-video">
       {toggleMap ? mapView : photoView}
     </div>
   );

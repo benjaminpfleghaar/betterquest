@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import Logo from "@/components/logo";
-import { CirclePlus } from "lucide-react";
 import Location from "@/components/location";
 import Skeleton from "@/components/skeleton";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -13,18 +12,16 @@ export default async function Page({
   const { slug } = await params;
 
   return (
-    <div className="flex min-h-svh flex-col gap-4 bg-stone-100 p-4 lg:gap-16">
-      <header className="flex justify-between">
-        <Logo variant="default" />
+    <div className="p-4 space-y-4 md:space-y-16">
+      <header>
         <Link
           href="/"
-          className="flex h-10 w-fit items-center justify-center gap-2 rounded-full bg-stone-900 pr-4 pl-3 text-sm font-medium text-white"
+          className="inline-flex rounded-sm outline-offset-2 outline-blue-500 focus-visible:outline-2"
         >
-          <CirclePlus size={16} />
-          New
+          <Logo variant="stone" />
         </Link>
       </header>
-      <main className="mx-auto w-full max-w-md lg:max-w-lg">
+      <main className="mx-auto w-full max-w-md md:max-w-lg">
         <Suspense fallback={<Skeleton />}>
           <Location slug={slug} />
         </Suspense>
