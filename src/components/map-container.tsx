@@ -19,7 +19,7 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
 
   const photoView = (
     <>
-      <Image src={photo} className="object-cover" alt="Photo" fill />
+      <Image src={photo} className="object-cover" fill alt="Photo" />
       <button
         type="button"
         className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
@@ -39,14 +39,14 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
         className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
         onClick={() => setToggleMap(!toggleMap)}
       >
-        <Image src={photo} className="object-cover" alt="" fill />
+        <Image src={photo} className="object-cover" fill alt="" />
         <span className="sr-only">Show Photo</span>
       </button>
     </>
   );
 
   return (
-    <div className="relative aspect-video">
+    <div className="relative aspect-video bg-stone-100">
       {toggleMap ? mapView : photoView}
     </div>
   );

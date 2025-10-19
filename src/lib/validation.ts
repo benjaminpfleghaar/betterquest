@@ -17,6 +17,10 @@ export const formSchema = z.object({
     .number()
     .min(-180, "Longitude must be between -180 and 180")
     .max(180, "Longitude must be between -180 and 180"),
+  type: z.enum(
+    ["blocked", "modified", "destroyed", "other"],
+    "This type is not allowed",
+  ),
   description: z
     .string()
     .nonempty("Description can not be empty")

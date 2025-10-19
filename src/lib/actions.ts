@@ -16,6 +16,7 @@ export const handleSubmit = async (
       file: formData.get("file"),
       latitude: formData.get("latitude"),
       longitude: formData.get("longitude"),
+      type: formData.get("type"),
       description: formData.get("description"),
     });
 
@@ -23,7 +24,7 @@ export const handleSubmit = async (
       return { error: validatedForm.error.issues[0].message };
     }
 
-    const { file, latitude, longitude, description } = validatedForm.data;
+    const { file, latitude, longitude, type, description } = validatedForm.data;
 
     const ext = MIME_TYPES[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
@@ -43,6 +44,7 @@ export const handleSubmit = async (
       image: storage.path,
       latitude,
       longitude,
+      type,
       description,
     });
 

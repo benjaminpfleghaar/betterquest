@@ -48,7 +48,7 @@ export type Database = {
           latitude: number;
           longitude: number;
           slug: string;
-          type: string;
+          type: "blocked" | "modified" | "destroyed" | "other";
         };
         Insert: {
           created_at?: string;
@@ -58,7 +58,7 @@ export type Database = {
           latitude: number;
           longitude: number;
           slug: string;
-          type: string;
+          type: "blocked" | "modified" | "destroyed" | "other";
         };
         Update: {
           created_at?: string;
@@ -68,7 +68,7 @@ export type Database = {
           latitude?: number;
           longitude?: number;
           slug?: string;
-          type?: string;
+          type?: "blocked" | "modified" | "destroyed" | "other";
         };
         Relationships: [];
       };
