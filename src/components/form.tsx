@@ -4,9 +4,9 @@ import exifr from "exifr";
 import Image from "next/image";
 import { toast } from "sonner";
 import { handleSubmit } from "@/lib/actions";
+import { CirclePlus, X } from "lucide-react";
 import { fileSchema } from "@/lib/validation";
 import TypeSelector from "@/components/type-selector";
-import { CirclePlus, X } from "lucide-react";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function Form() {
