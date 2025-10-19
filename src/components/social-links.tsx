@@ -20,8 +20,8 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
   const shareLink = async () => {
     try {
       await navigator.share(shareData);
-    } catch (error) {
-      console.error("Failed to share:", error);
+    } catch (err) {
+      console.error("Failed to share:", err);
       toast.error("Failed to share link");
     }
   };
@@ -30,14 +30,14 @@ export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
     try {
       await navigator.clipboard.writeText("Link");
       toast.success("Link copied to clipboard");
-    } catch (error) {
-      console.error("Failed to copy to clipboard:", error);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
       toast.error("Failed to copy link");
     }
   };
 
   return (
-    <ul className="flex flex-row justify-center gap-2 lg:flex-col lg:justify-start">
+    <ul className="flex flex-row justify-center gap-2 md:flex-col md:justify-start">
       <li className="flex items-center gap-2">
         <button
           type="button"
