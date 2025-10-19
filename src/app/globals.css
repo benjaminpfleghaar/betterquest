@@ -7,7 +7,7 @@
 
 @layer base {
     body {
-        @apply font-geist antialiased;
+        @apply font-geist bg-stone-200 antialiased;
     }
 }
 
