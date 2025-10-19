@@ -20,7 +20,7 @@ export default function NotFound() {
           </p>
           <Link
             href="/"
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-stone-900 px-4 py-3 text-sm font-medium text-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
+            className="flex cursor-pointer items-center justify-center rounded-lg bg-stone-900 px-3 py-2 text-sm font-medium text-white outline-offset-2 outline-blue-500 focus-visible:outline-2"
           >
             Return Home
           </Link>

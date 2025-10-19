@@ -11,27 +11,27 @@ interface SocialLinksProps {
 }
 
 export default function SocialLinks({ lat, lon, issue }: SocialLinksProps) {
-  const shareData = {
-    title: "betterquest",
-    text: issue,
-    url: "Link",
-  };
-
   const shareLink = async () => {
     try {
-      await navigator.share(shareData);
+      await navigator.share({
+        title: "betterquest",
+        text: issue,
+        url: window.location.href,
+      });
     } catch (err) {
-      console.error("Failed to share:", err);
+      if (err instanceof Error && err.name === "AbortError") return;
+
+      console.error("Share failed:", err);
       toast.error("Failed to share link");
     }
   };
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText("Link");
+      await navigator.clipboard.writeText(window.location.href);
       toast.success("Link copied to clipboard");
     } catch (err) {
-      console.error("Failed to copy to clipboard:", err);
+      console.error("Copy failed:", err);
       toast.error("Failed to copy link");
     }
   };
