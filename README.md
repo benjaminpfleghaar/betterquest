@@ -3,7 +3,7 @@
 Next.js web app that helps riders and hikers document trail issues by uploading photos that automatically extract GPS
 coordinates.
 
-<video src="https://github.com/benjaminpfleghaar/betterquest/blob/main/assets/betterquest.mov" width="100%" controls></video>
+![Mockup](./assets/mockup.jpg)
 
 ## Features
 
@@ -33,19 +33,19 @@ coordinates.
 
 1. Clone the repository:
 
-    ```bash
+    ```
     git clone https://github.com/benjaminpfleghaar/betterquest.git
     ```
 
 2. Install dependencies:
 
-    ```bash
+    ```
     npm install
     ```
 
 3. Create a `.env.local` file and add your credentials:
 
-    ```bash
+    ```
     NEXT_PUBLIC_SUPABASE_URL=<YOUR_URL>
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<YOUR_KEY>
     ```
@@ -65,12 +65,12 @@ coordinates.
 
 5. Create a bucket with the name `images`
 
-    ```bash
+    ```
    Add "SELECT" and "INSERT" policy
     ```
 
 6. Run the development server:
 
-    ```bash
+    ```
     npm run dev
     ```
