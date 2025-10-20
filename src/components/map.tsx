@@ -1,9 +1,9 @@
 import "@/styles/leaflet.css";
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 
 interface MapProps {
-  position: LatLngExpression | LatLngTuple;
+  position: LatLngExpression;
 }
 
 export default function Map({ position }: MapProps) {

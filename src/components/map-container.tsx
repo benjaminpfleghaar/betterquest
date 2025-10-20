@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { LatLngExpression, LatLngTuple } from "leaflet";
+import { LatLngExpression } from "leaflet";
+import ToggleButton from "@/components/toggle-button";
 
 const Map = dynamic(() => import("@/components/map"), {
   ssr: false,
@@ -11,7 +12,7 @@ const Map = dynamic(() => import("@/components/map"), {
 
 interface MapContainerProps {
   photo: string;
-  position: LatLngExpression | LatLngTuple;
+  position: LatLngExpression;
 }
 
 export default function MapContainer({ photo, position }: MapContainerProps) {
@@ -19,29 +20,23 @@ export default function MapContainer({ photo, position }: MapContainerProps) {
 
   const photoView = (
     <>
-      <Image src={photo} className="object-cover" fill alt="Photo" />
-      <button
-        type="button"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
-        onClick={() => setToggleMap(!toggleMap)}
-      >
-        <Image src="/map-preview.png" width={240} height={240} alt="" />
-        <span className="sr-only">Show Map</span>
-      </button>
+      <Image src={photo} className="object-cover" fill alt="Location photo" />
+      <ToggleButton
+        onClick={() => setToggleMap(true)}
+        img="/map-preview.png"
+        label="Show Map"
+      />
     </>
   );
 
   const mapView = (
     <>
       <Map position={position} />
-      <button
-        type="button"
-        className="absolute right-6 -bottom-6 flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-white outline-blue-500 focus-visible:outline-2"
-        onClick={() => setToggleMap(!toggleMap)}
-      >
-        <Image src={photo} className="object-cover" fill alt="" />
-        <span className="sr-only">Show Photo</span>
-      </button>
+      <ToggleButton
+        onClick={() => setToggleMap(false)}
+        img={photo}
+        label="Show Photo"
+      />
     </>
   );
 
