@@ -3,6 +3,7 @@
 import exifr from "exifr";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { handleSubmit } from "@/lib/actions";
 import { CirclePlus, X } from "lucide-react";
 import { fileSchema } from "@/lib/validation";
@@ -10,13 +11,17 @@ import TypeSelector from "@/components/type-selector";
 import { ChangeEvent, useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 export default function Form() {
-  const [state, formAction, isPending] = useActionState(handleSubmit, null);
+  const [state, formAction, isPending] = useActionState(handleSubmit, {
+    success: false,
+    message: "",
+  });
   const [file, setFile] = useState<File | null>(null);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
 
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileURL = useMemo(
@@ -33,8 +38,32 @@ export default function Form() {
   }, [fileURL]);
 
   useEffect(() => {
-    if (state?.error) resetForm(state.error);
-  }, [state]);
+    let toastId: string | number | undefined;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if (isPending) {
+      toastId = toast.loading("Loading...");
+    }
+
+    if (!isPending && state.message) {
+      toast.dismiss(toastId);
+
+      if (state.success) {
+        toast.success("Link created! Redirecting...");
+        resetForm();
+
+        timeoutId = setTimeout(() => {
+          router.push(state.message);
+        }, 2000);
+      } else {
+        resetForm(state.message);
+      }
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isPending, state.success, state.message, router]);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -84,13 +113,7 @@ export default function Form() {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-white p-4">
-      {isPending ? (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-white/90 text-sm font-medium text-stone-900">
-          <div className="size-5 animate-spin rounded-full border-[1.5px] border-current border-e-transparent"></div>
-          Loading...
-        </div>
-      ) : null}
+    <div className="rounded-2xl bg-white p-4">
       {fileURL ? (
         <div className="relative mb-2 aspect-video overflow-hidden rounded-lg bg-stone-100">
           <Image

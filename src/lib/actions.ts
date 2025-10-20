@@ -1,16 +1,18 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { MIME_TYPES } from "@/lib/constants";
 import { createClient } from "@/lib/supabase";
 import { formSchema } from "@/lib/validation";
 
-export const handleSubmit = async (
-  _: unknown,
-  formData: FormData,
-): Promise<{ error: string }> => {
-  const slug = Date.now().toString(36);
+type SubmitState = {
+  success: boolean;
+  message: string;
+};
 
+export const handleSubmit = async (
+  _: SubmitState,
+  formData: FormData,
+): Promise<SubmitState> => {
   try {
     const validatedForm = formSchema.safeParse({
       file: formData.get("file"),
@@ -21,11 +23,12 @@ export const handleSubmit = async (
     });
 
     if (!validatedForm.success) {
-      return { error: validatedForm.error.issues[0].message };
+      return { success: false, message: validatedForm.error.issues[0].message };
     }
 
     const { file, latitude, longitude, type, description } = validatedForm.data;
 
+    const slug = Date.now().toString(36);
     const ext = MIME_TYPES[file.type] ?? "bin";
     const fileName = `${slug}.${ext}`;
 
@@ -36,7 +39,7 @@ export const handleSubmit = async (
       .upload(fileName, file);
 
     if (storageError) {
-      return { error: storageError.message };
+      return { success: false, message: storageError.message };
     }
 
     const { error: locationError } = await supabase.from("locations").insert({
@@ -49,16 +52,16 @@ export const handleSubmit = async (
     });
 
     if (locationError) {
-      return { error: locationError.message };
+      return { success: false, message: locationError.message };
     }
+
+    return { success: true, message: `/${slug}` };
   } catch (err) {
     const message =
       err instanceof Error
         ? err.message
         : "An unexpected error occurred. Please try again later.";
 
-    return { error: message };
+    return { success: false, message: message };
   }
-
-  redirect(`/${slug}`);
 };
