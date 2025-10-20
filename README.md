@@ -3,7 +3,7 @@
 Next.js web app that helps riders and hikers document trail issues by uploading photos that automatically extract GPS
 coordinates.
 
-https://github.com/benjaminpfleghaar/betterquest/blob/main/assets/betterquest.mov
+<video src="https://github.com/benjaminpfleghaar/betterquest/blob/main/assets/betterquest.mov" width="100%" controls></video>
 
 ## Features
 
@@ -52,7 +52,7 @@ https://github.com/benjaminpfleghaar/betterquest/blob/main/assets/betterquest.mo
 
 4. Create a database `locations` with the following schema:
 
-    ```bash
+    ```
     id           int8
     slug         text
     image        text
