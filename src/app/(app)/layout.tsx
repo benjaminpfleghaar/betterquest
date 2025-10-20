@@ -5,7 +5,7 @@ import { geist, jakarta } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "betterquest",
-  description: "Lorem ipsum dolor sit amet",
+  description: "Keep your trails safe & healthy",
 };
 
 export default function RootLayout({

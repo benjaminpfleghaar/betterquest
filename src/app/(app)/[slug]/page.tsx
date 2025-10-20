@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import Logo from "@/components/logo";
 import Location from "@/components/location";
 import Skeleton from "@/components/skeleton";
-import Link from "next/link";
 
 export default async function Page({
   params,
