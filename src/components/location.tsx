@@ -65,7 +65,7 @@ export default async function Location({ slug }: { slug: string }) {
               <h2 className="text-xs text-stone-500">{date.toDateString()}</h2>
             </div>
           </div>
-          <p className="text-sm text-stone-500">{location.description}</p>
+          <p className="text-sm text-stone-600">{location.description}</p>
         </div>
       </div>
       <SocialLinks

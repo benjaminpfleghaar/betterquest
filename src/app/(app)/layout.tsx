@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geist.variable} ${jakarta.variable}`}>
         {children}
-        <Toaster />
+        <Toaster position="top-right" />
       </body>
     </html>
   );
