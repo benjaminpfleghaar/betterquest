@@ -63,7 +63,7 @@ coordinates.
     type         text
     ```
 
-5. Create a bucket with the name `images`
+5. Create a bucket named `images`
 
     ```
    Add "SELECT" and "INSERT" policy
