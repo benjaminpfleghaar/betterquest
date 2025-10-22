@@ -3,7 +3,7 @@
 Next.js web app that helps riders and hikers document trail issues by uploading photos that automatically extract GPS
 coordinates.
 
-![Mockup](./assets/mockup.jpg)
+[![Mockup](./assets/mockup.jpg)](https://vimeo.com/manage/videos/1129443364)
 
 ## Features
 
